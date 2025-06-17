@@ -1,16 +1,20 @@
 <x-layout>
-    <h2>Movie-List</h2>
+    <div class="d-flex justify-content-between">
+        <h2>Movie-List</h2>
+        <a href="/movies/add" role="button" class="btn btn-info">Add movie</a>
+    </div>
+<br>
         @forelse($movies as $movie)
             <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="" class="img-fluid rounded-start" alt="...">
+                        <img src="{{ $movie->image }}" class="img-fluid rounded-start" style="max-width: 200px;" alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">{{ $movie->title }}</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            <p class="card-text">{{ $movie->description }}</p>
+                            <p class="card-text"><small class="text-body-secondary">{{ $movie->director }} | {{ date('Y', $movie->year) }}</small></p>
                         </div>
                     </div>
                 </div>

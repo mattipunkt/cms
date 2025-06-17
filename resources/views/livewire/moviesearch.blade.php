@@ -3,10 +3,10 @@
         <input class="form-control" id="filmTitle" type="text" wire:keydown="search" wire:model="query"  placeholder="Suche">
         <label for="filmTitle">Filmtitel</label>
     </div>
-
+    <div class="list-group">
     @foreach($searchResults as $result)
-        <ul>
-            <li>{{ $result['title'] }}</li>
-        </ul>
+            <a href="/movies/add?tmdb_id={{ $result['id'] }}" class="list-group-item list-group-item-actions">{{ $result['title'] }}</a>
     @endforeach
+    </div>
+
 </div>
