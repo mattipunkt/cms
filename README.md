@@ -1,4 +1,4 @@
-<p align="center">![logo](/logo.png?raw=true)</p>
+<p align="center"><img src="logo.png"></p>
 
 # CMS
 
