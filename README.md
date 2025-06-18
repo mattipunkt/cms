@@ -10,3 +10,15 @@ Soon...™
 ## Development
 Developing works on Linux and MacOS. Windows should also work, but has not been tested yet.
 Install PHP and Laravel. (I recommend using [Laravel Herd Lite](https://php.new))
+
+Clone the git repo and copy `.env.example` to `.env`. Change the values as you like.
+To start developing run the two commands before you can start developing.
+```bash
+php artisan key:generate
+php artisan migrate
+```
+
+Now you are ready to go. To run the project run
+```
+composer run dev
+```
