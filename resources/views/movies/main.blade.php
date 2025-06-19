@@ -1,7 +1,7 @@
 <x-layout>
     <div class="d-flex justify-content-between">
         <h2>Movie-List</h2>
-        <a href="/movies/add" role="button" class="btn btn-info">Add movie</a>
+        <span><a href="/movies/add" role="button" class="btn btn-info">Add Movie</a></span>
     </div>
 <br>
         @forelse($movies as $movie)
@@ -12,7 +12,14 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $movie->title }}</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ $movie->title }}</h5>
+                                <div>
+                                    <span><a style="color: black;" class="bi bi-calendar3" href="/movies/{{ $movie->id }}/plan"></a></span>
+                                    <span><a style="color: black;" class="bi bi-pencil" href="/movies/{{ $movie->id }}/edit"></a></span>
+                                    <span><a style="color: black;" class="bi bi-trash" href="/movies/{{ $movie->id }}/delete"></a></span>
+                                </div>
+                            </div>
                             <p class="card-text">{{ $movie->description }}</p>
                             <p class="card-text"><small class="text-body-secondary">{{ $movie->director }} | {{ date('Y', $movie->year) }}</small></p>
                         </div>
