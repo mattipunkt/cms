@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use function Laravel\Prompts\error;
 
 class MovieController extends Controller
 {
@@ -27,9 +29,23 @@ class MovieController extends Controller
     }
 
     public function editMoviePost(int $id, Request $request) {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-
+        try {
+            $request->validate([
+                'title' => 'required|max:255',
+            ]);
+        } catch (ValidationException) {
+            error("You shall add a title!");
+        }
+        Movie::where('id', $id)->update([
+            'title' => $request->title,
+            'year' =>  strtotime("01-01-".$request->year),
+            'director' =>  $request->director,
+            'actors' =>  $request->actors,
+            'genre' =>  $request->genre,
+            'country' =>  $request->country,
+            'description' =>  $request->description,
+            'trailer_url' =>   $request->trailer_url,
+            'runtime' =>   $request->runtime,
         ]);
         return redirect('/movies/');
     }
@@ -43,5 +59,7 @@ class MovieController extends Controller
         }
         return redirect('/movies/');
     }
+
+
 
 }

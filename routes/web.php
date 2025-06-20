@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MovieController;
 use App\Livewire\Moviesearch;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,6 @@ Route::post('/auth/register', [AuthController::class, 'register'])->name('showRe
 
 Route::get('/movies/add', Moviesearch::class)->middleware('auth');
 Route::get('/movies/{id}/edit',  [MovieController::class, 'editMovie'])->name('editMovie')->middleware('auth');
+Route::post('/movies/{id}/edit',  [MovieController::class, 'editMoviePost'])->name('editMovie')->middleware('auth');
 Route::get('/movies/{id}/delete', [MovieController::class, 'deleteMovie'])->name('deleteMovie')->middleware('auth');
+Route::get('/movies/{id}/edit/poster', [ImageController::class, 'editPoster'])->name('editPoster')->middleware('auth');

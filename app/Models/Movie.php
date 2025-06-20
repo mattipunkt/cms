@@ -19,5 +19,6 @@ class Movie extends Model
         'image',
         'trailer_url',
         'runtime',
+        'tmdb_id'
     ];
 }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('trailer_url')->nullable();
             $table->integer('runtime')->nullable();
+            $table->integer('tmdb_id')->nullable();
         });
     }
 

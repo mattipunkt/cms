@@ -7,10 +7,12 @@
         @forelse($movies as $movie)
             <div class="card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-4">
+                    @if($movie->image)
+                    <div class="col-auto">
                         <img src="{{ $movie->image }}" class="img-fluid rounded-start" style="max-width: 200px;" alt="...">
                     </div>
-                    <div class="col-md-8">
+                    @endif
+                    <div class="col">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">{{ $movie->title }}</h5>
