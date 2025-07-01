@@ -79,6 +79,7 @@ class Moviesearch extends Component
         $movie->description = $results->overview ?? null;
         $movie->image = 'https://image.tmdb.org/t/p/w1280/'.$this->makeRequest('movie/'.$tmdb_id.'/images')->posters[0]->file_path;
         $movie->runtime = $results->runtime;
+        $movie->tmdb_id = $results->id;
         $movie->save();
         return $this->redirect('/movies/');
     }

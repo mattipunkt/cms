@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\LocationController;
+
 use App\Livewire\Moviesearch;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -24,3 +26,6 @@ Route::get('/movies/{id}/edit',  [MovieController::class, 'editMovie'])->name('e
 Route::post('/movies/{id}/edit',  [MovieController::class, 'editMoviePost'])->name('editMovie')->middleware('auth');
 Route::get('/movies/{id}/delete', [MovieController::class, 'deleteMovie'])->name('deleteMovie')->middleware('auth');
 Route::get('/movies/{id}/edit/poster', [ImageController::class, 'editPoster'])->name('editPoster')->middleware('auth');
+Route::post('/movies/{id}/edit/poster', [ImageController::class, 'setPoster'])->name('setPoster')->middleware('auth');
+
+Route::get('/locations', [LocationController::class, 'showLocations'])->name('showLocations')->middleware('auth');
