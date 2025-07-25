@@ -12,9 +12,14 @@ class ImageController extends Controller
     public function editPoster(string $id)
     {
         $movie = Movie::where('id', $id)->first();
+        if($movie->tmdb_id === null) {
+            $images = array();
+        } else {
+            TmdbController::getPosters($movie->tmdb_id);
+        }
         return view('movies.poster', [
             "movie" => $movie,
-            "images" => TmdbController::getPosters($movie->tmdb_id)
+            "images" => $images,
         ]);
     }
 

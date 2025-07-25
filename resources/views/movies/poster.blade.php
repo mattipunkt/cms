@@ -1,6 +1,17 @@
 <x-layout>
+    <div class="d-flex justify-content-between">
+        <h2>Edit poster: <b>{{ $movie->title}}</b></h2>
+        <form action="/movies/{{ $movie->id }}/edit/poster/man" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="d-flex">
+                <input name="image" class="form-control form-control-sm" id="manFile" type="file">
+                <button class="btn">
+                    <i class="bi bi-upload"></i>
+                </button>
+            </div>
 
-    <h1>Poster ändern: <b>{{ $movie->title}}</b></h1>
+        </form>
+    </div>
     <div class="row">
         @foreach ($images as $image)
         <div class="col-2">
