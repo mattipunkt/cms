@@ -1,6 +1,7 @@
 <?php
 
-use Database\Factories\MovieFactory;
+use App\Models\Location;
+use App\Models\Movie;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -9,5 +10,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('factory:movie', function () {
-    \App\Models\Movie::factory()->count(10)->create();
+    Movie::factory()->count(10)->create();
 })->purpose('Create Movies for Debugging');
+
+Artisan::command('factory:location', function () {
+    Location::factory()->count(3)->create();
+    }
+);

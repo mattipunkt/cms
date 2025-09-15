@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -14,32 +14,32 @@ class AuthController extends Controller
     {
         if (User::count() === 0) {
             session()->flash('status', 'You are the first user, so the credentials you enter will be used to create the admin account!');
+
             return view('auth.register');
         }
 
         return view('auth.login');
     }
 
-
     public function login(Request $request)
     {
         $validated = $request->validate(
             [
                 'email' => 'required|email',
-                'password' => 'required|string'
+                'password' => 'required|string',
             ]
         );
         $user = User::where('email', $validated['email'])->first();
 
-
         if (Auth::attempt($validated)) {
             session()->regenerate();
+
             return redirect('/');
         }
 
         throw ValidationException::withMessages([
-                'credentials' => 'Wrong credentials!'
-            ]
+            'credentials' => 'Wrong credentials!',
+        ]
         );
     }
 
@@ -50,7 +50,7 @@ class AuthController extends Controller
                 'name' => 'required|string|max:255',
                 'first_name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users',
-                'password' => 'required|string|min:8|confirmed'
+                'password' => 'required|string|min:8|confirmed',
             ]
         );
 
@@ -71,6 +71,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }

@@ -5,32 +5,36 @@ namespace App\Livewire;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Livewire\Component;
-use stdClass;
 
 class Moviesearch extends Component
 {
     public array $searchResults = [];
+
     public string $query = '';
+
     public function render(Request $request)
     {
         $tmdb_id = $request->query('tmdb_id');
         if ($tmdb_id) {
             $this->addMovie($tmdb_id);
         }
+
         return view('livewire.moviesearch')->with('searchResults', $this->searchResults)->layout('components.layout');
     }
 
-    public function search() {
+    public function search()
+    {
         $this->searchResults = [];
         $curl = curl_init();
         $results = $this->makeRequest('search/movie?query='.str_replace(' ', '+', $this->query).'&language='.env('TMDB_LANG', 'en-US'));
-        if($results == null) {
+        if ($results == null) {
             session()->flash('error', 'No results found or API Limit may be exceeded');
         } else {
             $results = $results->results;
             foreach ($results as $result) {
                 $this->searchResults[] = [
                     'title' => $result->title,
+                    'year' => $result->release_date,
                     'id' => $result->id,
                     'description' => $result->overview,
                 ];
@@ -38,10 +42,10 @@ class Moviesearch extends Component
         }
     }
 
-
-    public function addMovie($tmdb_id) {
+    public function addMovie($tmdb_id)
+    {
         $results = $this->makeRequest('movie/'.$tmdb_id.'?language='.env('TMDB_LANG', 'en-US'));
-        if($results == null) {
+        if ($results == null) {
             session()->flash('error', 'No results found or API Limit may be exceeded');
         }
         $credits = $this->makeRequest('movie/'.$tmdb_id.'/credits?language='.env('TMDB_LANG', 'en-US'));
@@ -72,8 +76,8 @@ class Moviesearch extends Component
         $movie->year = strtotime($results->release_date) ?? null;
         $movie->director = $director ?? null;
         $movie->actors = $actors ?? null;
-        $movie->genre = implode(', ', array_map(function($genre) {
-                return $genre->name;
+        $movie->genre = implode(', ', array_map(function ($genre) {
+            return $genre->name;
         }, $results->genres)) ?? null;
         $movie->country = implode(', ', $results->origin_country) ?? null;
         $movie->description = $results->overview ?? null;
@@ -81,13 +85,15 @@ class Moviesearch extends Component
         $movie->runtime = $results->runtime;
         $movie->tmdb_id = $results->id;
         $movie->save();
+
         return $this->redirect('/movies/');
     }
 
-    public function makeRequest(string $url) {
+    public function makeRequest(string $url)
+    {
         $curl = curl_init();
 
-        curl_setopt_array($curl, array(
+        curl_setopt_array($curl, [
             CURLOPT_URL => 'https://api.themoviedb.org/3/'.$url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
@@ -96,14 +102,15 @@ class Moviesearch extends Component
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer '.env('TMDB_KEY', '')
-            ),
-        ));
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer '.env('TMDB_KEY', ''),
+            ],
+        ]);
 
         $response = curl_exec($curl);
 
         curl_close($curl);
+
         return json_decode($response);
     }
 }

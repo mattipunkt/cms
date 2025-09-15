@@ -16,6 +16,7 @@ To start developing run the two commands before you can start developing.
 ```bash
 php artisan key:generate
 php artisan migrate
+php artisan storage:link
 ```
 
 Now you are ready to go. To run the project run

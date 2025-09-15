@@ -8,7 +8,7 @@
     @endif
     <div class="list-group">
     @foreach($searchResults as $result)
-            <a href="/movies/add?tmdb_id={{ $result['id'] }}" class="list-group-item list-group-item-actions">{{ $result['title'] }}</a>
+            <a href="/movies/add?tmdb_id={{ $result['id'] }}" class="list-group-item list-group-item-actions">{{ $result['title'] }} <i>({{ substr($result['year'], 0, 4) }})</i></a>
     @endforeach
     </div>
 

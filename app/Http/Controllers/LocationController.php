@@ -2,14 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Location;
 
 class LocationController extends Controller
 {
-    public function showLocations() {
+    public function showLocations()
+    {
         return view('location.main', [
-            "locations" => Location::all()
+            'locations' => Location::all(),
         ]);
+    }
+
+    public function addLocation()
+    {
+        return view('location.add');
+    }
+
+    public function addLocationPost()
+    {
+        $validated = request()->validate([
+            'name' => 'required|max:255',
+            'address' => 'max:255',
+        ]);
+
+        Location::create($validated);
+        return redirect('/locations');
+    }
+
+    public function deleteLocation(int $id)
+    {
+        Location::where('id', $id)->delete();
+        return redirect('/locations');
     }
 }
