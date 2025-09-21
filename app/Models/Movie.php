@@ -22,4 +22,9 @@ class Movie extends Model
         'runtime',
         'tmdb_id',
     ];
+
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
+    }
 }

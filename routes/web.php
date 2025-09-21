@@ -35,3 +35,5 @@ Route::get('/locations', [LocationController::class, 'showLocations'])->name('sh
 Route::get('/locations/add', [LocationController::class, 'addLocation'])->name('addLocation')->middleware('auth');
 Route::post('/locations/add', [LocationController::class, 'addLocationPost'])->name('addLocation')->middleware('auth');
 Route::get('/locations/{id}/delete', [LocationController::class, 'deleteLocation'])->name('deleteLocation')->middleware('auth');
+
+Route::get('/planner', [\App\Http\Controllers\ProgramPlannerController::class, 'showPlanner'])->name('showPlanner')->middleware('auth');

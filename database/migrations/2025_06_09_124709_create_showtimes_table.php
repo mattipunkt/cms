@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use App\Models\Location;
 use App\Models\Movie;
