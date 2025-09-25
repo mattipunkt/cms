@@ -37,3 +37,4 @@ Route::post('/locations/add', [LocationController::class, 'addLocationPost'])->n
 Route::get('/locations/{id}/delete', [LocationController::class, 'deleteLocation'])->name('deleteLocation')->middleware('auth');
 
 Route::get('/planner', [\App\Http\Controllers\ProgramPlannerController::class, 'showPlanner'])->name('showPlanner')->middleware('auth');
+Route::post('planner/{id}/showtime/add', [\App\Http\Controllers\ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');

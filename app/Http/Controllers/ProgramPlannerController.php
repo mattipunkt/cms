@@ -16,4 +16,15 @@ class ProgramPlannerController extends Controller
             'locations' => Location::all()
         ]);
     }
+
+    public function addShowtime(string $id)
+    {
+        $validated = request()->validate([
+            'time' => 'required|date_format:Y-m-d H:i',
+            'location' => 'required|exists:locations,id',
+        ]);
+        $movie = Movie::where('id', $id)->first();
+        $movie->showtimes()->create($validated);
+        return redirect('/planner');
+    }
 }
