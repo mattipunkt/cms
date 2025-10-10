@@ -20,19 +20,19 @@ class MovieController extends Controller
         ]);
     }
 
-    public function addMovie(int $tmdb_id)
+    public function addMovie(string $tmdb_id)
     {
         return redirect('/movies/');
     }
 
-    public function editMovie(int $id)
+    public function editMovie(string $id)
     {
         return view('movies.edit', [
             'movie' => Movie::where('id', $id)->first(),
         ]);
     }
 
-    public function editMoviePost(int $id, Request $request)
+    public function editMoviePost(string $id, Request $request)
     {
         try {
             $request->validate([
@@ -56,7 +56,7 @@ class MovieController extends Controller
         return redirect('/movies/');
     }
 
-    public function deleteMovie(int $id)
+    public function deleteMovie(string $id)
     {
         try {
             Movie::where('id', $id)->delete();
@@ -98,7 +98,7 @@ class MovieController extends Controller
         return redirect('/movies/');
     }
 
-    public function changePosterMan(int $id, Request $request)
+    public function changePosterMan(string $id, Request $request)
     {
         try {
             $request->validate([

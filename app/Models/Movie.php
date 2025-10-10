@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Movie extends Model
 {
     use HasFactory;
+    use HasUuids;
 
     protected $fillable = [
         'title',
@@ -24,8 +26,19 @@ class Movie extends Model
         'tmdb_id',
     ];
 
-    public function showtimes(): Movie|HasMany
+    public function showtimes(): HasMany
     {
         return $this->hasMany(Showtime::class);
     }
+
+    public function upcomingShowtimes(): HasMany
+    {
+        return $this->showtimes()->upcoming();
+    }
+
+    public function pastShowtimes(): HasMany
+    {
+        return $this->showtimes()->past();
+    }
+
 }

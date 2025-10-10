@@ -29,7 +29,7 @@ class LocationController extends Controller
         return redirect('/locations');
     }
 
-    public function deleteLocation(int $id)
+    public function deleteLocation(string $id)
     {
         Location::where('id', $id)->delete();
         return redirect('/locations');

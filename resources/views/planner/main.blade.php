@@ -14,9 +14,24 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @foreach($movie->showtimes as $showtime)
-                        {{ $showtime }}
-                    @endforeach
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($movie->upcomingShowtimes as $showtime)
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <b>{{ $showtime->time->format("d.m.Y, H:i")}}</b> <br>
+                                    <small>{{ $showtime->location->name }}</small>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="/planner/showtime/{{ $showtime->id }}/remove">
+                                            Delete
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endforeach
+                    </div>
+
                 </div>
             </div>
             <div class="modal fade" id="{{ $movie->id }}modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -29,19 +44,17 @@
                         <div class="modal-body">
                             <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
                                 @csrf
-                                <input class="form-control" name="time" type="datetime-local">
-                                <select class="form-select mt-2" aria-label="Location">
+                                <input class="form-control" name="time" type="datetime-local" required>
+                                <select class="form-select mt-2" name="location_id" aria-label="Location" required>
                                     @foreach($locations as $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
                                     @endforeach
                                 </select>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info mt-1 align-items-end">
-                                Save!
-                            </button>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-info mt-3">
+                                        Save!
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>

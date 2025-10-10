@@ -1,5 +1,5 @@
 <nav
-    class="navbar navbar-expand-sm navbar-light bg-light"
+    class="navbar navbar-expand-sm navbar-dark"
 >
     <div class="container">
         <a class="navbar-brand" href="#">CMS</a>
