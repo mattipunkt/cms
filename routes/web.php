@@ -48,7 +48,7 @@ Route::get('/api/movies', function () {
     return \App\Http\Resources\MovieResource::collection(Movie::all());
 });
 Route::get('/api/upcomingShowtimes', function () {
-    return ShowtimeResource::collection(Showtime::with(['location','movie'])->upcoming()->get());
+    return ShowtimeResource::collection(Showtime::with(['location', 'movie'])->upcoming()->get());
 });
 Route::get('/api/movie/{id}', function ($id) {
     return new \App\Http\Resources\MovieResource(Movie::where('id', $id)->first());

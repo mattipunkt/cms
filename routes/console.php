@@ -15,5 +15,5 @@ Artisan::command('factory:movie', function () {
 
 Artisan::command('factory:location', function () {
     Location::factory()->count(3)->create();
-    }
+}
 );

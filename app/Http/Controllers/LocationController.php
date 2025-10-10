@@ -26,12 +26,14 @@ class LocationController extends Controller
         ]);
 
         Location::create($validated);
+
         return redirect('/locations');
     }
 
     public function deleteLocation(string $id)
     {
         Location::where('id', $id)->delete();
+
         return redirect('/locations');
     }
 }
