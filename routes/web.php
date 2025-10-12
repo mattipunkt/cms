@@ -10,6 +10,7 @@ use App\Livewire\Moviesearch;
 use App\Models\Movie;
 use App\Models\Showtime;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('home');

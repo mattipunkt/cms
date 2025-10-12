@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ImageController extends Controller
 {
@@ -24,10 +26,13 @@ class ImageController extends Controller
 
     public function setPoster(string $id, Request $request)
     {
-        $movie = Movie::where('id', $id)->first();
-        $movie->image = $request->input('cover_url');
-        $movie->save();
-
-        return redirect('/movies/'.$id.'/edit/');
+        $image = TmdbController::getImageFile($request->input('cover_url'));
+        $image = Image::read($image);
+        $encoded = $image->encodeByExtension('webp', 75);
+        $relativePath = 'posters/'.$id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        Movie::where('id', $id)->update(['image' => $url]);
+        return redirect('/movies/');
     }
 }

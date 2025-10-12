@@ -11,7 +11,11 @@
     "require": {
         "php": "^8.2",
         "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-imagick": "*",
         "carbon-cli/carbon-cli": "^1.3",
+        "intervention/image": "^3.11",
+        "intervention/image-laravel": "^1.5",
         "laravel/framework": "^12.0",
         "laravel/octane": "^2.12",
         "laravel/tinker": "^2.10.1",

@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MovieResource extends JsonResource
 {
+
     /**
      * Transform the resource collection into an array.
      *

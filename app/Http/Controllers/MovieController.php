@@ -7,7 +7,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Laravel\Facades\Image;
 use function Laravel\Prompts\error;
 
 class MovieController extends Controller
@@ -109,9 +110,16 @@ class MovieController extends Controller
 
             return redirect('/movies/');
         }
-        $path = $request->image->store('images', 'public');
-        Movie::where('id', $id)->update(['image' => Storage::url($path)]);
-
+        $image = Image::read($request->image);
+        if($image->width() < 500) {
+            session()->flash('error', 'Warning: Image is too small and may not look good on large screen devices!');
+        }
+        $encoded = $image->encodeByExtension('webp', 80);
+        $relativePath = 'posters/'.$id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        Movie::where('id', $id)->update(['image' => $url]);
         return redirect('/movies/');
     }
+
 }
