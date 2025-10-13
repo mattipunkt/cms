@@ -9,7 +9,7 @@
     <a href="/movies/{{ $movie->id }}/edit/poster" class="btn btn-outline-info">
         Change poster
     </a>
-    <a href="/movies/{{ $movie->id }}/edit/background" class="btn btn-outline-info">
+    <a href="/movies/{{ $movie->id }}/edit/backdrop" class="btn btn-outline-info">
         Change full-size background
     </a>
 

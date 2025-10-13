@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Http\Controllers\TmdbController;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 use Livewire\Component;
 
 class Moviesearch extends Component
@@ -85,7 +88,21 @@ class Moviesearch extends Component
         $movie->runtime = $results->runtime;
         $movie->tmdb_id = $results->id;
         $movie->save();
+        $image = Image::read(TmdbController::getImageFile($movie->image));
+        $encoded = $image->encodeByExtension('webp', 80);
+        $relativePath = 'posters/'.$movie->id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        Movie::where('id', $movie->id)->update(['image' => $url]);
 
+        $backdrop_url = TmdbController::getBackdrops($results->id)[0]->file_path;
+        $image = Image::read(TmdbController::getImageFile('https://image.tmdb.org/t/p/original/'.$backdrop_url));
+        $encoded = $image->encodeByExtension('webp', 80);
+        $relativePath = 'backdrops/'.$movie->id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        $movie->backdrop = $url;
+        $movie->save();
         return $this->redirect('/movies/');
     }
 

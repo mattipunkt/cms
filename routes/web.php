@@ -31,10 +31,14 @@ Route::post('/movies/{id}/edit', [MovieController::class, 'editMoviePost'])->nam
 Route::get('/movies/{id}/delete', [MovieController::class, 'deleteMovie'])->name('deleteMovie')->middleware('auth');
 Route::get('/movies/{id}/edit/poster', [ImageController::class, 'editPoster'])->name('editPoster')->middleware('auth');
 Route::post('/movies/{id}/edit/poster', [ImageController::class, 'setPoster'])->name('setPoster')->middleware('auth');
+Route::get('/movies/{id}/edit/backdrop', [ImageController::class, 'editBackdrop'])->name('editBackdrop')->middleware('auth');
+Route::post('/movies/{id}/edit/backdrop', [ImageController::class, 'setBackdrop'])->name('setBackdrop')->middleware('auth');
 Route::get('/movies/add/man', [MovieController::class, 'addMovieMan'])->name('addMovieMan')->middleware('auth');
 Route::post('/movies/add/man', [MovieController::class, 'saveMovieMan'])->name('saveMovieMan')->middleware('auth');
 
 Route::post('movies/{id}/edit/poster/man', [MovieController::class, 'changePosterMan'])->name('changePosterMan')->middleware('auth');
+Route::post('movies/{id}/edit/backdrop/man', [MovieController::class, 'changeBackdropMan'])->name('changeBackdropMan')->middleware('auth');
+
 
 Route::get('/locations', [LocationController::class, 'showLocations'])->name('showLocations')->middleware('auth');
 Route::get('/locations/add', [LocationController::class, 'addLocation'])->name('addLocation')->middleware('auth');

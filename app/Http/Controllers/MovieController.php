@@ -21,10 +21,6 @@ class MovieController extends Controller
         ]);
     }
 
-    public function addMovie(string $tmdb_id)
-    {
-        return redirect('/movies/');
-    }
 
     public function editMovie(string $id)
     {
@@ -119,6 +115,29 @@ class MovieController extends Controller
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $id)->update(['image' => $url]);
+        return redirect('/movies/');
+    }
+
+    public function changeBackdropMan(string $id, Request $request)
+    {
+        try {
+            $request->validate([
+                'image' => 'required|image|max:4096', // 2MB Max
+            ]);
+        } catch (ValidationException $e) {
+            session()->flash('error', 'Error: You shall upload an image!');
+
+            return redirect('/movies/');
+        }
+        $image = Image::read($request->image);
+        if($image->width() < 500) {
+            session()->flash('error', 'Warning: Image is too small and may not look good on large screen devices!');
+        }
+        $encoded = $image->encodeByExtension('webp', 80);
+        $relativePath = 'backdrops/'.$id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        Movie::where('id', $id)->update(['backdrop' => $url]);
         return redirect('/movies/');
     }
 

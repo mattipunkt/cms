@@ -35,4 +35,30 @@ class ImageController extends Controller
         Movie::where('id', $id)->update(['image' => $url]);
         return redirect('/movies/');
     }
+
+    public function editBackdrop(string $id)
+    {
+        $images = [];
+        $movie = Movie::where('id', $id)->first();
+        if (! ($movie->tmdb_id === null)) {
+            $images = TmdbController::getBackdrops($movie->tmdb_id);
+        }
+
+        return view('movies.backdrop', [
+            'movie' => $movie,
+            'images' => $images,
+        ]);
+    }
+
+    public function setBackdrop(string $id, Request $request)
+    {
+        $image = TmdbController::getImageFile($request->input('cover_url'));
+        $image = Image::read($image);
+        $encoded = $image->encodeByExtension('webp', 75);
+        $relativePath = 'backdrops/'.$id.'.webp';
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $url = Storage::disk('public')->url($relativePath);
+        Movie::where('id', $id)->update(['backdrop' => $url]);
+        return redirect('/movies/');
+    }
 }

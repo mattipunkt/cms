@@ -53,4 +53,10 @@ class TmdbController extends Controller
         curl_close($curl);
         return $response;
     }
+
+    public static function getBackdrops(mixed $tmdb_id)
+    {
+        $resp = self::makeRequest('movie/'.$tmdb_id.'/images');
+        return array_slice($resp->backdrops, 0, 15);
+    }
 }

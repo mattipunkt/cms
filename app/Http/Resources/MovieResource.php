@@ -27,6 +27,7 @@ class MovieResource extends JsonResource
             'image' => $this->image,
             'trailer_url' => $this->trailer_url,
             'runtime' => $this->runtime,
+            'backdrop' => $this->backdrop,
         ];
     }
 }
