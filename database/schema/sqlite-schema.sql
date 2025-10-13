@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS "movies"(
   "trailer_url" varchar,
   "runtime" integer,
   "tmdb_id" integer,
+  "backdrop" varchar,
   primary key("id")
 );
 CREATE TABLE IF NOT EXISTS "locations"(
@@ -120,3 +121,4 @@ INSERT INTO migrations VALUES(3,'0001_01_01_000002_create_jobs_table',1);
 INSERT INTO migrations VALUES(4,'2025_06_09_124630_create_movies_table',1);
 INSERT INTO migrations VALUES(5,'2025_06_09_124659_create_locations_table',1);
 INSERT INTO migrations VALUES(6,'2025_06_09_124709_create_showtimes_table',1);
+INSERT INTO migrations VALUES(7,'2025_10_12_115229_update_movies_table',2);
