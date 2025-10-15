@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProgramPlannerController;
+use App\Http\Resources\EventResource;
+use App\Http\Resources\MovieResource;
 use App\Http\Resources\ShowtimeResource;
 use App\Livewire\Moviesearch;
 use App\Models\Movie;
@@ -49,19 +52,27 @@ Route::get('/planner', [ProgramPlannerController::class, 'showPlanner'])->name('
 Route::post('/planner/{id}/showtime/add', [ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');
 Route::get('/planner/showtime/{id}/remove', [ProgramPlannerController::class, 'removeShowtime'])->name('removeShowtime')->middleware('auth');
 
+Route::get('/events', [EventController::class, 'showEvents'])->name('showEvents')->middleware('auth');
+Route::post('/events/add', [EventController::class, 'addEvent'])->name('addEvent')->middleware('auth');;
+Route::get('/events/{id}/delete', [EventController::class, 'deleteEvent'])->name('deleteEvent')->middleware('auth');;
+
+
 # API
 Route::get('/api/movies', function () {
-    return \App\Http\Resources\MovieResource::collection(Movie::all());
+    return MovieResource::collection(Movie::all());
 });
 Route::get('/api/upcomingShowtimes', function () {
-    return ShowtimeResource::collection(Showtime::with(['location', 'movie'])->upcoming()->get());
+    return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->upcoming()->get());
 });
 Route::get('/api/movie/{id}', function ($id) {
-    return new \App\Http\Resources\MovieResource(Movie::where('id', $id)->first());
+    return new MovieResource(Movie::where('id', $id)->first());
 });
 Route::get('/api/movie/{id}/showtimes', function ($id) {
     return ShowtimeResource::collection(Showtime::where('movie_id', $id)->get());
 });
 Route::get('/api/today', function () {
-    return ShowtimeResource::collection(Showtime::with(['location', 'movie'])->today()->get());
+    return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->today()->get());
+});
+Route::get('/api/events', function () {
+    return EventResource::collection(\App\Models\Event::all());
 });

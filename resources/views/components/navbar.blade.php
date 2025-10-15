@@ -25,6 +25,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/locations"><i class="bi bi-geo-alt"></i> Locations</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/events"><i class="bi bi-balloon"></i> Events</a>
+                </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">

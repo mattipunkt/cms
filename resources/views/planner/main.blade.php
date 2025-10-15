@@ -45,9 +45,16 @@
                             <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
                                 @csrf
                                 <input class="form-control" name="time" type="datetime-local" required>
+                                <input class="form-control mt-2" name="language" type="text" placeholder="Language (e.g. OV)">
                                 <select class="form-select mt-2" name="location_id" aria-label="Location" required>
                                     @foreach($locations as $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                    @endforeach
+                                </select>
+                                <select class="form-select mt-2" name="event_id" aria-label="Event (optional)">
+                                    <option value="">No event</option>
+                                    @foreach($events as $event)
+                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="d-flex justify-content-end">

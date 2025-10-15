@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Location;
 use App\Models\Movie;
 use App\Models\Showtime;
@@ -14,6 +15,7 @@ class ProgramPlannerController extends Controller
         return view('planner.main', [
             'movies' => Movie::all(),
             'locations' => Location::all(),
+            'events' => Event::all()
         ]);
     }
 
@@ -23,6 +25,8 @@ class ProgramPlannerController extends Controller
             // HTML datetime-local sends value like 2025-10-10T10:00
             'time' => 'required|date_format:Y-m-d\TH:i',
             'location_id' => 'required|exists:locations,id',
+            'event_id' => 'exists:events,id',
+            'language' => 'max:255'
         ]);
         $movie = Movie::where('id', $id)->firstOrFail();
         $movie->showtimes()->create($validated);

@@ -19,6 +19,8 @@ class ShowtimeResource extends JsonResource
             'time' => optional($this->time)->toIso8601String(),
             'movie' => new MovieResource($this->whenLoaded('movie')),
             'location' => new LocationResource($this->whenLoaded('location')),
+            'language' => $this->language,
+            'event' => new EventResource($this->whenLoaded('event')),
         ];
     }
 }

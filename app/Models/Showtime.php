@@ -15,6 +15,9 @@ class Showtime extends Model
     protected $fillable = [
         'time',
         'location_id',
+        'event_id',
+        'movie_id',
+        'language',
     ];
 
     protected $casts = [
@@ -31,6 +34,11 @@ class Showtime extends Model
         return $this->belongsTo(Location::class);
     }
 
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
     public function scopeUpcoming(Builder $query): Builder
     {
         return $query->where('time', '>', Carbon::now());
@@ -43,6 +51,6 @@ class Showtime extends Model
 
     public function scopeToday(Builder $query): Builder
     {
-        return $query->where('time', '<', Carbon::tomorrow())->where('time', '>', Carbon::now());
+        return $query->where('time', '<', Carbon::tomorrow())->where('time', '>', Carbon::now())->orderBy('time');
     }
 }
