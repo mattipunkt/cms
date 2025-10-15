@@ -49,6 +49,7 @@ Route::get('/planner', [ProgramPlannerController::class, 'showPlanner'])->name('
 Route::post('/planner/{id}/showtime/add', [ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');
 Route::get('/planner/showtime/{id}/remove', [ProgramPlannerController::class, 'removeShowtime'])->name('removeShowtime')->middleware('auth');
 
+# API
 Route::get('/api/movies', function () {
     return \App\Http\Resources\MovieResource::collection(Movie::all());
 });
@@ -60,4 +61,7 @@ Route::get('/api/movie/{id}', function ($id) {
 });
 Route::get('/api/movie/{id}/showtimes', function ($id) {
     return ShowtimeResource::collection(Showtime::where('movie_id', $id)->get());
+});
+Route::get('/api/today', function () {
+    return ShowtimeResource::collection(Showtime::with(['location', 'movie'])->today()->get());
 });

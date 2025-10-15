@@ -40,4 +40,9 @@ class Showtime extends Model
     {
         return $query->where('time', '<', Carbon::now());
     }
+
+    public function scopeToday(Builder $query): Builder
+    {
+        return $query->where('time', '<', Carbon::tomorrow())->where('time', '>', Carbon::now());
+    }
 }
