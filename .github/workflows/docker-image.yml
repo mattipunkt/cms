@@ -23,7 +23,6 @@ jobs:
           push: true
           provenance: false
           tags: |
-            ghcr.io/mattipunkt/cms:$(date +%s)
             ghcr.io/mattipunkt/cms:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
