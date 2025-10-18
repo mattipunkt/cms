@@ -25,4 +25,10 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: mattipunkt/cms:latest
+          provenance: false
+          tags: |
+            ghcr.io/mattipunkt/cms:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=cms container image
+            org.opencontainers.image.licenses=MIT
