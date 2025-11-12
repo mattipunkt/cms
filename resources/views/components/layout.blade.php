@@ -7,8 +7,8 @@
     <style>
         @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
     </style>
-    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
-    <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="/js/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
