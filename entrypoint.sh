@@ -58,6 +58,7 @@ php artisan migrate --force
 
 # 7. Cache Laravel configs for performance
 print_message "Caching Laravel configurations..."
+php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
