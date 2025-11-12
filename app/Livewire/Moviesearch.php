@@ -94,14 +94,17 @@ class Moviesearch extends Component
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $movie->id)->update(['image' => $url]);
-
-        $backdrop_url = TmdbController::getBackdrops($results->id)[0]->file_path;
-        $image = Image::read(TmdbController::getImageFile('https://image.tmdb.org/t/p/original/'.$backdrop_url));
-        $encoded = $image->encodeByExtension('webp', 80);
-        $relativePath = 'backdrops/'.$movie->id.'.webp';
-        Storage::disk('public')->put($relativePath, (string) $encoded);
-        $url = Storage::disk('public')->url($relativePath);
-        $movie->backdrop = $url;
+        try {
+            $backdrop_url = TmdbController::getBackdrops($results->id)[0]->file_path;
+            $image = Image::read(TmdbController::getImageFile('https://image.tmdb.org/t/p/original/'.$backdrop_url));
+            $encoded = $image->encodeByExtension('webp', 80);
+            $relativePath = 'backdrops/'.$movie->id.'.webp';
+            Storage::disk('public')->put($relativePath, (string) $encoded);
+            $url = Storage::disk('public')->url($relativePath);
+            $movie->backdrop = $url;
+        } catch (\Exception $e) {
+            session()->flash('error', 'No backdrop found');
+        }
         $movie->save();
         return $this->redirect('/movies/');
     }

@@ -12,8 +12,11 @@ use App\Http\Resources\ShowtimeResource;
 use App\Livewire\Moviesearch;
 use App\Models\Movie;
 use App\Models\Showtime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+
 
 Route::get('/', function () {
     return view('home');
@@ -67,7 +70,15 @@ Route::get('/api/upcomingShowtimes', function () {
 Route::get('/api/movie/{id}', function ($id) {
     return new MovieResource(Movie::where('id', $id)->first());
 });
-Route::get('/api/movie/{id}/showtimes', function ($id) {
+Route::get('/api/movie/{id}/showtimes', function ($id, Request $request) {
+    if($request->has('date')) {
+        $startOfDay = Carbon::parse($request->date)->startOfDay();
+        $endOfDay = Carbon::parse($request->date)->endOfDay();
+        return ShowtimeResource::collection(Showtime::where('movie_id', $id)
+            ->whereBetween('time', [$startOfDay, $endOfDay])
+            ->with(['location', 'movie', 'event'])
+            ->get());
+    }
     return ShowtimeResource::collection(Showtime::where('movie_id', $id)->get());
 });
 Route::get('/api/today', function () {
@@ -75,4 +86,15 @@ Route::get('/api/today', function () {
 });
 Route::get('/api/events', function () {
     return EventResource::collection(\App\Models\Event::all());
+});
+Route::get('/api/showtimes/byDate/{date}', function ($date) {
+    $startOfDay = Carbon::parse($date)->startOfDay();
+    $endOfDay = Carbon::parse($date)->endOfDay();
+
+    return ShowtimeResource::collection(
+        Showtime::with(['location', 'movie', 'event'])
+            ->whereBetween('time', [$startOfDay, $endOfDay])
+            ->orderBy('time')
+            ->get()
+    );
 });
