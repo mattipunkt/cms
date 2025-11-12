@@ -37,6 +37,8 @@ fi
 echo "APP_URL=$APP_URL" >> .env
 echo "TMDB_KEY=$TMDB_KEY" >> .env
 echo "TMDB_LANG=$TMDB_LANG" >> .env
+echo "APP_TIMEZONE=$APP_TIMEZONE" >> .env
+
 
 # 3. Check if database exists (for SQLite)
 # Source the .env file to get variables
