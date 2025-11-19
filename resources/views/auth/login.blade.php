@@ -1,6 +1,6 @@
 <x-layout>
     <h1>
-        Login
+        {{ __('lines.login') }}
     </h1>
     <br>
     @if ($errors->any())
@@ -9,8 +9,8 @@
                 <strong>Error!</strong> {{ $error }}
             </div>
         @endforeach
-    @endif  
-    <form action="/auth/login" method="post">  
+    @endif
+    <form action="/auth/login" method="post">
         @csrf
         <div class="form-floating mb-3">
             <input
@@ -20,7 +20,7 @@
                 id="email"
                 placeholder=""
             />
-            <label for="email">E-Mail-Address</label>
+            <label for="email">{{ __('lines.mail')  }}</label>
         </div>
         <div class="form-floating mb-3">
             <input
@@ -30,14 +30,14 @@
                 id="password"
                 placeholder=""
             />
-            <label for="password">Password</label>
+            <label for="password">{{ __('lines.password') }}</label>
         </div>
         <button
             type="submit"
             class="btn btn-primary"
         >
-            Login
+            {{ __('lines.login') }}
         </button>
-        
+
     </form>
 </x-layout>

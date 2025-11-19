@@ -1,6 +1,6 @@
 <x-layout>
     <div class="d-flex justify-content-between">
-        <h2>Edit Backdrop: <b>{{ $movie->title}}</b></h2>
+        <h2>{{ __('lines.editbackdrop') }}: <b>{{ $movie->title}}</b></h2>
         <form action="/movies/{{ $movie->id }}/edit/backdrop/man" method="post" enctype="multipart/form-data">
             @csrf
             <div class="d-flex">

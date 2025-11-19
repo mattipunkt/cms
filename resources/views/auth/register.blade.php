@@ -1,6 +1,6 @@
 <x-layout>
     <h1>
-        Registrieren
+        {{ __('lines.register') }}
     </h1>
     <br>
     @if ($errors->any())
@@ -21,7 +21,7 @@
                 placeholder=""
                 required
             />
-            <label for="first_name">First Name</label>
+            <label for="first_name">{{ __('lines.first_name') }}</label>
         </div>
         <div class="form-floating mb-3">
             <input
@@ -32,7 +32,7 @@
                 placeholder=""
                 required
             />
-            <label for="name">Username</label>
+            <label for="name">{{ __('lines.username') }}</label>
         </div>
         <div class="form-floating mb-3">
             <input
@@ -43,7 +43,7 @@
                 placeholder=""
                 required
             />
-            <label for="email">Mail-Address</label>
+            <label for="email">{{ __('lines.mail') }}</label>
         </div>
         <div class="form-floating mb-3">
             <input
@@ -54,7 +54,7 @@
                 placeholder=""
                 required
             />
-            <label for="password">Password</label>
+            <label for="password">{{ __('lines.password') }}</label>
         </div>
         <div class="form-floating mb-3">
             <input
@@ -65,16 +65,16 @@
                 placeholder=""
                 required
             />
-            <label for="password_confirmation">Repeat Password</label>
+            <label for="password_confirmation">{{ __('lines.repeat') }}</label>
         </div>
         <button
             type="submit"
             class="btn btn-primary"
         >
-            Register!
+            {{ __('lines.register') }}
         </button>
-        
-    </form>   
-        
-        
+
+    </form>
+
+
 </x-layout>

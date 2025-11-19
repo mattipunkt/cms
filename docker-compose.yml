@@ -9,5 +9,6 @@ services:
             - APP_URL=http://localhost:8081 # change to your domain here
             - TMDB_KEY= # set your tmdb api key here
             - TMDB_LANG=en-US # change to your langauge according to tmdb lang specifications
+            - APP_LOCALE=en # available: de, en
 volumes:
     cms_db:

@@ -1,6 +1,6 @@
 <x-layout>
     <h1>
-        Program planner
+        {{ __('lines.program_planner') }}
     </h1>
     <div>
         @foreach($movies as $movie)
@@ -10,7 +10,7 @@
                         {{ $movie->title }}
                     </div>
                     <div>
-                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#{{ $movie->id }}modal">Add Showtime</button>
+                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#{{ $movie->id }}modal">{{ __('lines.add_showtime') }}</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -24,7 +24,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="/planner/showtime/{{ $showtime->id }}/remove">
-                                            Delete
+                                            {{ __('lines.delete') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -38,28 +38,28 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                                <h1 class="modal-title fs-5">Add showtime for <b>{{ $movie->title }}</b></h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h1 class="modal-title fs-5">{{ __('lines.add_showtime_for') }} <b>{{ $movie->title }}</b></h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('lines.close') }}"></button>
                         </div>
                         <div class="modal-body">
                             <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
                                 @csrf
                                 <input class="form-control" name="time" type="datetime-local" required>
-                                <input class="form-control mt-2" name="language" type="text" placeholder="Language (e.g. OV)">
-                                <select class="form-select mt-2" name="location_id" aria-label="Location" required>
+                                <input class="form-control mt-2" name="language" type="text" placeholder="{{ __('lines.language') }} (e.g. OV)">
+                                <select class="form-select mt-2" name="location_id" aria-label="{{ __('lines.location') }}" required>
                                     @foreach($locations as $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
                                     @endforeach
                                 </select>
-                                <select class="form-select mt-2" name="event_id" aria-label="Event (optional)">
-                                    <option value="">No event</option>
+                                <select class="form-select mt-2" name="event_id" aria-label="{{ __('lines.event') }} (optional)">
+                                    <option value="">{{ __('lines.no_event') }}</option>
                                     @foreach($events as $event)
                                         <option value="{{ $event->id }}">{{ $event->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-info mt-3">
-                                        Save!
+                                        {{ __('lines.save') }}
                                     </button>
                                 </div>
                             </form>

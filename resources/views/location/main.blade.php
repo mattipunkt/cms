@@ -1,7 +1,7 @@
 <x-layout>
     <div class="d-flex justify-content-between">
-            <h1>Locations</h1>
-            <span><a href="/locations/add" role="button" class="btn btn-info">Add location</a></span>
+            <h1>{{ __('lines.locations') }}</h1>
+            <span><a href="/locations/add" role="button" class="btn btn-info">{{ __('lines.new_location') }}</a></span>
     </div>
     <ul class="list-group">
     @foreach ($locations as $location)

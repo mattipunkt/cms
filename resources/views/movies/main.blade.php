@@ -1,7 +1,7 @@
 <x-layout>
     <div class="d-flex justify-content-between">
-        <h2>Movie-List</h2>
-        <span><a href="/movies/add" role="button" class="btn btn-info">Add Movie</a></span>
+        <h2>{{ __('lines.movie_list') }}</h2>
+        <span><a href="/movies/add" role="button" class="btn btn-info">{{ __('lines.add_movie') }}</a></span>
     </div>
 <br>
         @forelse($movies as $movie)
@@ -29,6 +29,6 @@
                 </div>
             </div>
         @empty
-            <i>It's oh so quiet... Try to add a movie</i>
+            <i>{{ __('lines.no_movies') }}</i>
         @endforelse
 </x-layout>

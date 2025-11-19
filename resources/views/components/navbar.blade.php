@@ -17,16 +17,16 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/planner"><i class="bi bi-calendar4-range"></i> Program-Planner</a>
+                    <a class="nav-link" href="/planner"><i class="bi bi-calendar4-range"></i> {{ __('lines.program_planner') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/movies"><i class="bi bi-camera-reels"></i> Films</a>
+                    <a class="nav-link" href="/movies"><i class="bi bi-camera-reels"></i> {{ __('lines.film_list') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/locations"><i class="bi bi-geo-alt"></i> Locations</a>
+                    <a class="nav-link" href="/locations"><i class="bi bi-geo-alt"></i> {{ __('lines.locations') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/events"><i class="bi bi-balloon"></i> Events</a>
+                    <a class="nav-link" href="/events"><i class="bi bi-balloon"></i> {{ __('lines.events') }}</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -37,18 +37,15 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownId">
                         @guest
                         <a class="dropdown-item" href="/auth/login">
-                            Login
+                            {{ __('lines.login') }}
                         </a>
                         @endguest
                         @auth
                         <a class="dropdown-item disabled" disabled>
-                            <b>Logged in as <i>{{ Auth::user()->name }}</i></b>
+                            <b>{{ __('lines.loggedinas') }} <i>{{ Auth::user()->name }}</i></b>
                         </a>
                         <a class="dropdown-item" href="/auth/logout">
-                            Logout
-                        </a>
-                        <a class="dropdown-item" href="/auth/edit">
-                            Edit Account
+                            {{ __('lines.logout') }}
                         </a>
                         @endauth
                     </div>

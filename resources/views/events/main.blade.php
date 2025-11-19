@@ -1,11 +1,11 @@
 <x-layout>
     <div class="d-flex justify-content-between">
         <h1>
-            Events
+            {{ __('lines.events') }}
         </h1>
         <span >
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addEventModal">
-                Add new event
+                {{ __('lines.new_event') }}
             </button>
         </span>
     </div>
@@ -13,17 +13,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title fs-5">Add new event</h4>
+                    <h4 class="modal-title fs-5">{{ __('lines.new_event') }}</h4>
                 </div>
                 <div class="modal-body">
                     <form action="/events/add" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Event name</label>
+                            <label for="name" class="form-label">{{ __('lines.event_name') }}</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <button type="submit" class="btn btn-info">
-                            Save
+                            {{ __('lines.save') }}
                         </button>
                     </form>
                 </div>
