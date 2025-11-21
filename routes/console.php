@@ -17,3 +17,7 @@ Artisan::command('factory:location', function () {
     Location::factory()->count(3)->create();
 }
 );
+
+Artisan::command('factory:showtimes', function () {
+    \App\Models\Showtime::factory()->count(50)->create();
+});
