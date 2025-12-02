@@ -22,7 +22,7 @@ class ShowtimeFactory extends Factory
         return [
             'time' => $this->faker->dateTimeBetween('+1 day', '+14 day'), // Ein zufälliger Zeitpunkt innerhalb des nächsten Monats
             'location_id' => Location::inRandomOrder()->first()->id, // Eine zufällige Location-ID aus der Location-Tabelle
-            'event_id' => Event::inRandomOrder()->first()->id, // Eine zufällige Event-ID aus der Event-Tabelle
+            'event_id' => Event::inRandomOrder()->value('id') ?? null,
             'movie_id' => Movie::inRandomOrder()->first()->id, // Eine zufällige Movie-ID aus der Movie-Tabelle
             'language' => $this->faker->randomElement(['Synchro', 'OV', 'OmU']), // Zufällige Sprache (de, en, fr, es)
         ];

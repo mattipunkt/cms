@@ -79,7 +79,7 @@ Route::get('/api/movie/{id}/showtimes', function ($id, Request $request) {
             ->with(['location', 'movie', 'event'])
             ->get());
     }
-    return ShowtimeResource::collection(Showtime::where('movie_id', $id)->get());
+    return ShowtimeResource::collection(Showtime::with(['location', 'event'])->where('movie_id', $id)->get());
 });
 Route::get('/api/today', function () {
     return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->today()->get());
