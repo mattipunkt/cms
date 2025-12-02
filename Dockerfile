@@ -1,5 +1,5 @@
 # Use the official FrankenPHP image with PHP 8.3
-FROM dunglas/frankenphp:8.4
+FROM dunglas/frankenphp:php8.4
 
 # Install system dependencies, including Node.js
 RUN apt-get update && apt-get install -y \
