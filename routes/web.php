@@ -76,6 +76,7 @@ Route::get('/api/movie/{id}/showtimes', function ($id, Request $request) {
         $endOfDay = Carbon::parse($request->date)->endOfDay();
         return ShowtimeResource::collection(Showtime::where('movie_id', $id)
             ->whereBetween('time', [$startOfDay, $endOfDay])
+            ->orderBy('time')
             ->with(['location', 'movie', 'event'])
             ->get());
     }
