@@ -7,7 +7,7 @@
             <div class="card mb-2">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        {{ $movie->title }}
+                        {{ $movie->title }} @if(!$movie->activation) <b>({{ __('lines.currentlyinvisible') }})</b>@endif
                     </div>
                     <div>
                         <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#{{ $movie->id }}modal">{{ __('lines.add_showtime') }}</button>

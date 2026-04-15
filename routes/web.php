@@ -41,6 +41,10 @@ Route::get('/movies/{id}/edit/backdrop', [ImageController::class, 'editBackdrop'
 Route::post('/movies/{id}/edit/backdrop', [ImageController::class, 'setBackdrop'])->name('setBackdrop')->middleware('auth');
 Route::get('/movies/add/man', [MovieController::class, 'addMovieMan'])->name('addMovieMan')->middleware('auth');
 Route::post('/movies/add/man', [MovieController::class, 'saveMovieMan'])->name('saveMovieMan')->middleware('auth');
+Route::get('/movies/{id}/activate', [MovieController::class, 'activateMovie'])->name('activateMovie')->middleware('auth');
+Route::get('/movies/{id}/deactivate', [MovieController::class, 'deactivateMovie'])->name('deactivateMovie')->middleware('auth');
+
+
 
 Route::post('movies/{id}/edit/poster/man', [MovieController::class, 'changePosterMan'])->name('changePosterMan')->middleware('auth');
 Route::post('movies/{id}/edit/backdrop/man', [MovieController::class, 'changeBackdropMan'])->name('changeBackdropMan')->middleware('auth');
@@ -62,13 +66,23 @@ Route::get('/events/{id}/delete', [EventController::class, 'deleteEvent'])->name
 
 # API
 Route::get('/api/movies', function () {
-    return MovieResource::collection(Movie::all());
+    return MovieResource::collection(Movie::where('activation', 1)->get());
 });
 Route::get('/api/upcomingShowtimes', function () {
-    return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->upcoming()->get());
-});
+    return ShowtimeResource::collection(
+        Showtime::with(['location', 'movie', 'event'])
+            ->whereHas('movie', function ($query) {
+                $query->where('activation', true);
+            })
+            ->upcoming()
+            ->get()
+    );});
 Route::get('/api/movie/{id}', function ($id) {
-    return new MovieResource(Movie::where('id', $id)->first());
+    return new MovieResource(
+        Movie::where('id', $id)
+            ->where('activation', true)
+            ->firstOrFail()
+    );
 });
 Route::get('/api/movie/{id}/showtimes', function ($id, Request $request) {
     if($request->has('date')) {
@@ -87,7 +101,9 @@ Route::get('/api/movie/{id}/showtimes', function ($id, Request $request) {
         ->get());
 });
 Route::get('/api/today', function () {
-    return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->today()->get());
+    return ShowtimeResource::collection(Showtime::with(['location', 'movie', 'event'])->whereHas('movie', function ($query) {
+        $query->where('activation', true);
+    })->today()->get());
 });
 Route::get('/api/events', function () {
     return EventResource::collection(\App\Models\Event::all());
@@ -98,6 +114,9 @@ Route::get('/api/showtimes/byDate/{date}', function ($date) {
 
     return ShowtimeResource::collection(
         Showtime::with(['location', 'movie', 'event'])
+            ->whereHas('movie', function ($query) {
+                $query->where('activation', true);
+            })
             ->whereBetween('time', [$startOfDay, $endOfDay])
             ->orderBy('time')
             ->get()

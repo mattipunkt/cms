@@ -25,7 +25,8 @@ class Movie extends Model
         'trailer_url',
         'runtime',
         'tmdb_id',
-        'backdrop'
+        'backdrop',
+        'activation'
     ];
 
     public function showtimes(): HasMany

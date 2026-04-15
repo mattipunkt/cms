@@ -66,6 +66,33 @@ class MovieController extends Controller
         return redirect('/movies/');
     }
 
+    public function activateMovie(string $id)
+    {
+        try {
+            Movie::where('id', $id)->update([
+                'activation' => 1
+            ]);
+        } catch (QueryException $ex) {
+            session()->flash('error', 'Movie not found!'.$ex->getMessage());
+        }
+        return redirect('/movies/');
+
+    }
+
+    public function deactivateMovie(string $id)
+    {
+        try {
+            Movie::where('id', $id)->update([
+                'activation' => 0
+            ]);
+        } catch
+        (QueryException $ex) {
+            session()->flash('error', 'Movie not found!'.$ex->getMessage());
+        }
+        return redirect('/movies/');
+
+    }
+
     public function addMovieMan(Request $request)
     {
         return view('movies.manually');

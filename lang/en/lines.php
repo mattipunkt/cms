@@ -54,4 +54,5 @@ return [
     'startpage' => 'Choose one of the menu points above to get started!',
     'loggedinas' => 'You are logged in as',
     'logout' => 'Logout',
+    'currentlyinvisible' => 'Currently invisible',
 ];
