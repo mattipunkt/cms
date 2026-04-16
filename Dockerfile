@@ -34,6 +34,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
 
+HEALTHCHECK --interval=5m --start-interval=30s --timeout=10s CMD curl --fail http://localhost:80/ || exit 1
+
 # Set the entrypoint for the container
 ENTRYPOINT ["entrypoint.sh"]
 
