@@ -108,10 +108,23 @@ Route::get('/api/today', function () {
 Route::get('/api/events', function () {
     return EventResource::collection(\App\Models\Event::all());
 });
-Route::get('/api/showtimes/byDate/{date}', function ($date) {
+Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
+    $event = $request->query('eventId');
+
     $startOfDay = Carbon::parse($date)->startOfDay();
     $endOfDay = Carbon::parse($date)->endOfDay();
-
+    if($event != "") {
+        return ShowtimeResource::collection(
+            Showtime::with(['location', 'movie', 'event'])
+                ->where('event_id', $event)
+                ->whereHas('movie', function ($query) {
+                    $query->where('activation', true);
+                })
+                ->whereBetween('time', [$startOfDay, $endOfDay])
+                ->orderBy('time')
+                ->get()
+        );
+    }
     return ShowtimeResource::collection(
         Showtime::with(['location', 'movie', 'event'])
             ->whereHas('movie', function ($query) {
