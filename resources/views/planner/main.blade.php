@@ -45,6 +45,7 @@
                             <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
                                 @csrf
                                 <input class="form-control" name="time" type="datetime-local" required>
+                                <input class="form-control" name="subtitle" type="text" placeholder="{{ __('lines.subtitle') }} (e.g. Premiere)">
                                 <input class="form-control mt-2" name="language" type="text" placeholder="{{ __('lines.language') }} (e.g. OV)">
                                 <select class="form-select mt-2" name="location_id" aria-label="{{ __('lines.location') }}" required>
                                     @foreach($locations as $location)

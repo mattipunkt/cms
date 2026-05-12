@@ -20,6 +20,7 @@ class Showtime extends Model
         'event_id',
         'movie_id',
         'language',
+        'subtitle',
     ];
 
     protected $casts = [

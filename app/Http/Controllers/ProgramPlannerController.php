@@ -26,7 +26,8 @@ class ProgramPlannerController extends Controller
             'time' => 'required|date_format:Y-m-d\TH:i',
             'location_id' => 'required|exists:locations,id',
             'event_id' => 'exists:events,id|nullable',
-            'language' => 'max:255'
+            'language' => 'max:255',
+            'subtitle' => 'max:255',
         ]);
         $movie = Movie::where('id', $id)->firstOrFail();
         $movie->showtimes()->create($validated);

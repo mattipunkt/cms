@@ -15,7 +15,12 @@
                     <div class="col">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h5 class="card-title">{{ $movie->title }}</h5>
+                                <div>
+                                    <small class="text-uppercase">{{ $movie->subtitle }}</small>
+                                    <h5 class="card-title">{{ $movie->title }}</h5>
+                                </div>
+
+
                                 <div class="flex gap-5">
                                     @if($movie->activation)
                                         <span><a style="color:black" href="/movies/{{ $movie->id }}/deactivate" class="bi bi-eye"></a></span>
