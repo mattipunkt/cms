@@ -58,6 +58,10 @@
             <input name="runtime" type="number" class="form-control" id="runtime" value="{{ $movie->runtime }}">
             <label for="runtime">{{ __('lines.runtime') }}</label>
         </div>
+        <div class="form-floating mb-3">
+            <input name="tmdb_id" type="text" class="form-control" id="tmdb_id" value="{{ $movie->tmdb_id }}">
+            <label for="tmdb_id">{{ __('lines.tmdb_id') }}</label>
+        </div>
         <button class="btn btn-info w-100" type="submit">
             {{ __('lines.save') }}
         </button>

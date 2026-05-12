@@ -45,13 +45,12 @@ class Moviesearch extends Component
         }
     }
 
-    public function addMovie($tmdb_id)
-    {
-        $results = $this->makeRequest('movie/'.$tmdb_id.'?language='.env('TMDB_LANG', 'en-US'));
+    public static function addTmdbMovie($tmdb_id, $id = null) {
+        $results = self::makeRequest('movie/'.$tmdb_id.'?language='.env('TMDB_LANG', 'en-US'));
         if ($results == null) {
             session()->flash('error', 'No results found or API Limit may be exceeded');
         }
-        $credits = $this->makeRequest('movie/'.$tmdb_id.'/credits?language='.env('TMDB_LANG', 'en-US'));
+        $credits = self::makeRequest('movie/'.$tmdb_id.'/credits?language='.env('TMDB_LANG', 'en-US'));
         $director = '';
         foreach ($credits->crew as $credit) {
             if ($credit->job == 'Director') {
@@ -74,7 +73,11 @@ class Moviesearch extends Component
             }
             $i++;
         }
-        $movie = new Movie;
+        if ($id == null) {
+            $movie = new Movie;
+        } else {
+            $movie = Movie::find($id);
+        }
         $movie->title = $results->title ?? null;
         $movie->year = strtotime($results->release_date) ?? null;
         $movie->director = $director ?? null;
@@ -84,7 +87,7 @@ class Moviesearch extends Component
         }, $results->genres)) ?? null;
         $movie->country = implode(', ', $results->origin_country) ?? null;
         $movie->description = $results->overview ?? null;
-        $movie->image = 'https://image.tmdb.org/t/p/w1280/'.$this->makeRequest('movie/'.$tmdb_id.'/images')->posters[0]->file_path;
+        $movie->image = 'https://image.tmdb.org/t/p/w1280/'.self::makeRequest('movie/'.$tmdb_id.'/images')->posters[0]->file_path;
         $movie->runtime = $results->runtime;
         $movie->tmdb_id = $results->id;
         $movie->save();
@@ -106,10 +109,15 @@ class Moviesearch extends Component
             session()->flash('error', 'No backdrop found');
         }
         $movie->save();
+    }
+
+    public function addMovie($tmdb_id, )
+    {
+        self::addTmdbMovie($tmdb_id);
         return $this->redirect('/movies/');
     }
 
-    public function makeRequest(string $url)
+    public static function makeRequest(string $url)
     {
         $curl = curl_init();
 

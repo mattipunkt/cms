@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\Moviesearch;
 use App\Models\Movie;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -38,19 +39,22 @@ class MovieController extends Controller
         } catch (ValidationException) {
             error('You shall add a title!');
         }
-        Movie::where('id', $id)->update([
-            'title' => $request->title,
-            'year' => strtotime('01-01-'.$request->year),
-            'director' => $request->director,
-            'actors' => $request->actors,
-            'genre' => $request->genre,
-            'country' => $request->country,
-            'description' => $request->description,
-            'trailer_url' => $request->trailer_url,
-            'runtime' => $request->runtime,
-            'subtitle' => $request->subtitle,
-        ]);
-
+        if ($request->tmdb_id != Movie::find($id)->tmdb_id ) {
+            Moviesearch::addTmdbMovie($request->tmdb_id, $id);
+        } else {
+            Movie::where('id', $id)->update([
+                'title' => $request->title,
+                'year' => strtotime('01-01-'.$request->year),
+                'director' => $request->director,
+                'actors' => $request->actors,
+                'genre' => $request->genre,
+                'country' => $request->country,
+                'description' => $request->description,
+                'trailer_url' => $request->trailer_url,
+                'runtime' => $request->runtime,
+                'subtitle' => $request->subtitle,
+            ]);
+        }
         return redirect('/movies/');
     }
 
