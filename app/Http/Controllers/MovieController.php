@@ -48,6 +48,7 @@ class MovieController extends Controller
             'description' => $request->description,
             'trailer_url' => $request->trailer_url,
             'runtime' => $request->runtime,
+            'subtitle' => $request->subtitle,
         ]);
 
         return redirect('/movies/');
@@ -117,6 +118,7 @@ class MovieController extends Controller
             'description' => $request->description,
             'trailer_url' => $request->trailer_url,
             'runtime' => $request->runtime,
+            'subtitle' => $request->subtitle,
         ]);
 
         return redirect('/movies/');
@@ -168,4 +170,13 @@ class MovieController extends Controller
         return redirect('/movies/');
     }
 
+
+    public static function getMovieInfoFromId($array, $id) {
+        foreach ($array as $movie) {
+            if ($movie['filmId'] == $id) {
+                return $movie;
+            }
+        }
+        return null;
+    }
 }

@@ -23,6 +23,10 @@
             <label for="title">{{ __('lines.title') }}</label>
         </div>
         <div class="form-floating mb-3">
+            <input name="subtitle" type="text" class="form-control" id="subtitle" placeholder="Sondervorstellung mit Einführung!" value="{{ $movie->subtitle }}">
+            <label for="subtitle">{{ __('lines.subtitle') }}</label>
+        </div>
+        <div class="form-floating mb-3">
             <input name="year" id="year" class="form-control" type="number" value="{{ date('Y', $movie->year) }}"/>
             <label for="year">{{ __('lines.release_year') }}</label>
         </div>

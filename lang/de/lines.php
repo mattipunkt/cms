@@ -54,5 +54,6 @@ return [
     'startpage' => 'Wähle eine der oberen Menü-Punkte und lege los!',
     'loggedinas' => 'Du bist angemeldet als',
     'logout' => 'Abmelden',
-    'currentlyinvisible' => 'Aktuell nicht sichtbar'
+    'currentlyinvisible' => 'Aktuell nicht sichtbar',
+    'subtitle' => 'Zusatztitel'
 ];

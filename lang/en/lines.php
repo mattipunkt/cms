@@ -55,4 +55,5 @@ return [
     'loggedinas' => 'You are logged in as',
     'logout' => 'Logout',
     'currentlyinvisible' => 'Currently invisible',
+    'subtitle' => 'Extra title/Subtitle'
 ];

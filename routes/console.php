@@ -2,8 +2,12 @@
 
 use App\Models\Location;
 use App\Models\Movie;
+use App\Models\Showtime;
+use App\Http\Controllers\MovieController;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+
+
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -19,5 +23,27 @@ Artisan::command('factory:location', function () {
 );
 
 Artisan::command('factory:showtimes', function () {
-    \App\Models\Showtime::factory()->count(50)->create();
+    Showtime::factory()->count(50)->create();
+});
+
+Artisan::command('importArray {path}', function(string $path) {
+    $array = json_decode(file_get_contents($path), true);
+    foreach ($array[7]['data'] as $showtime) {
+        $date = strtotime($showtime['datum'].' '.$showtime['stunde'].':'.$showtime['minute']);
+        $movieId = $showtime['filmId'];
+        if ($date > time()) {
+            $movie = MovieController::getMovieInfoFromId($array[2]['data'], $movieId);
+            preg_match('/(?<=\s)\d{4}(?=\s)/', $movie['kurzinfo'], $matches);
+            Showtime::create([
+                'movie_id' => Movie::firstOrCreate([
+                    'title' => $movie['titel'],
+                    'year' => $matches[0] ?? '2026',
+                ])->id,
+                'location_id' => Location::firstOrCreate([
+                    'name' => 'Kinobar'
+                ])->id,
+                'time' => $date,
+            ]);
+        }
+    }
 });
