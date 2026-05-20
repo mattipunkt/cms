@@ -93,6 +93,8 @@ CREATE TABLE IF NOT EXISTS "movies"(
   "runtime" integer,
   "tmdb_id" integer,
   "backdrop" varchar,
+  "activation" tinyint(1) not null default '0',
+  "subtitle" varchar default '',
   primary key("id")
 );
 CREATE TABLE IF NOT EXISTS "locations"(
@@ -103,6 +105,13 @@ CREATE TABLE IF NOT EXISTS "locations"(
   "address" varchar,
   primary key("id")
 );
+CREATE TABLE IF NOT EXISTS "events"(
+  "id" varchar not null,
+  "created_at" datetime,
+  "updated_at" datetime,
+  "name" varchar not null,
+  primary key("id")
+);
 CREATE TABLE IF NOT EXISTS "showtimes"(
   "id" varchar not null,
   "time" datetime not null,
@@ -110,8 +119,20 @@ CREATE TABLE IF NOT EXISTS "showtimes"(
   "location_id" varchar not null,
   "created_at" datetime,
   "updated_at" datetime,
-  foreign key("movie_id") references "movies"("id") on delete cascade,
-  foreign key("location_id") references "locations"("id") on delete cascade,
+  "language" varchar,
+  "event_id" varchar,
+  "subtitle" varchar default '',
+  foreign key("location_id") references locations("id") on delete cascade on update no action,
+  foreign key("movie_id") references movies("id") on delete cascade on update no action,
+  foreign key("event_id") references "events"("id") on delete cascade,
+  primary key("id")
+);
+CREATE TABLE IF NOT EXISTS "booklets"(
+  "id" varchar not null,
+  "created_at" datetime,
+  "updated_at" datetime,
+  "name" varchar not null,
+  "path" varchar not null,
   primary key("id")
 );
 
@@ -122,3 +143,10 @@ INSERT INTO migrations VALUES(4,'2025_06_09_124630_create_movies_table',1);
 INSERT INTO migrations VALUES(5,'2025_06_09_124659_create_locations_table',1);
 INSERT INTO migrations VALUES(6,'2025_06_09_124709_create_showtimes_table',1);
 INSERT INTO migrations VALUES(7,'2025_10_12_115229_update_movies_table',2);
+INSERT INTO migrations VALUES(8,'2025_10_15_101034_create_events_table',3);
+INSERT INTO migrations VALUES(9,'2025_10_15_101142_add_languageinfo_to_showtime',3);
+INSERT INTO migrations VALUES(10,'2025_10_15_101529_add_event_to_showtimes',3);
+INSERT INTO migrations VALUES(11,'2026_04_15_114341_add_activation_to_movies',3);
+INSERT INTO migrations VALUES(12,'2026_05_12_135034_add_subtitle_to_movies',4);
+INSERT INTO migrations VALUES(13,'2026_05_12_140606_add_subtitle_to_showtimes',5);
+INSERT INTO migrations VALUES(14,'2026_05_20_101347_create_booklets_table',5);
