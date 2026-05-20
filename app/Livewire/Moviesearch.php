@@ -28,8 +28,7 @@ class Moviesearch extends Component
     public function search()
     {
         $this->searchResults = [];
-        $curl = curl_init();
-        $results = $this->makeRequest('search/movie?query='.str_replace(' ', '+', $this->query).'&language='.env('TMDB_LANG', 'en-US'));
+        $results = TmdbController::makeRequest('search/movie?query='.str_replace(' ', '+', $this->query).'&language='.config('services.tmdb.language'));
         if ($results == null) {
             session()->flash('error', 'No results found or API Limit may be exceeded');
         } else {
@@ -45,12 +44,13 @@ class Moviesearch extends Component
         }
     }
 
-    public static function addTmdbMovie($tmdb_id, $id = null) {
-        $results = self::makeRequest('movie/'.$tmdb_id.'?language='.env('TMDB_LANG', 'en-US'));
+    public static function addTmdbMovie($tmdb_id, $id = null)
+    {
+        $results = TmdbController::makeRequest('movie/' . $tmdb_id . '?language=' . config('services.tmdb.language'));
         if ($results == null) {
             session()->flash('error', 'No results found or API Limit may be exceeded');
         }
-        $credits = self::makeRequest('movie/'.$tmdb_id.'/credits?language='.env('TMDB_LANG', 'en-US'));
+        $credits = TmdbController::makeRequest('movie/' . $tmdb_id . '/credits?language=' . config('services.tmdb.language'));
         $director = '';
         foreach ($credits->crew as $credit) {
             if ($credit->job == 'Director') {
@@ -63,11 +63,11 @@ class Moviesearch extends Component
         foreach ($credits->cast as $credit) {
             if ($i < 5) {
                 if ($credit->known_for_department == 'Acting') {
-                    $actors = $actors.$credit->name.', ';
+                    $actors = $actors . $credit->name . ', ';
                 }
             } else {
                 if ($credit->known_for_department == 'Acting') {
-                    $actors = $actors.$credit->name;
+                    $actors = $actors . $credit->name;
                 }
                 break;
             }
@@ -87,22 +87,22 @@ class Moviesearch extends Component
         }, $results->genres)) ?? null;
         $movie->country = implode(', ', $results->origin_country) ?? null;
         $movie->description = $results->overview ?? null;
-        $movie->image = 'https://image.tmdb.org/t/p/w1280/'.self::makeRequest('movie/'.$tmdb_id.'/images')->posters[0]->file_path;
+        $movie->image = 'https://image.tmdb.org/t/p/w1280/' . TmdbController::makeRequest('movie/' . $tmdb_id . '/images')->posters[0]->file_path;
         $movie->runtime = $results->runtime;
         $movie->tmdb_id = $results->id;
         $movie->save();
         $image = Image::read(TmdbController::getImageFile($movie->image));
         $encoded = $image->encodeByExtension('webp', 80);
-        $relativePath = 'posters/'.$movie->id.'.webp';
-        Storage::disk('public')->put($relativePath, (string) $encoded);
+        $relativePath = 'posters/' . $movie->id . '.webp';
+        Storage::disk('public')->put($relativePath, (string)$encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $movie->id)->update(['image' => $url]);
         try {
             $backdrop_url = TmdbController::getBackdrops($results->id)[0]->file_path;
-            $image = Image::read(TmdbController::getImageFile('https://image.tmdb.org/t/p/original/'.$backdrop_url));
+            $image = Image::read(TmdbController::getImageFile('https://image.tmdb.org/t/p/original/' . $backdrop_url));
             $encoded = $image->encodeByExtension('webp', 80);
-            $relativePath = 'backdrops/'.$movie->id.'.webp';
-            Storage::disk('public')->put($relativePath, (string) $encoded);
+            $relativePath = 'backdrops/' . $movie->id . '.webp';
+            Storage::disk('public')->put($relativePath, (string)$encoded);
             $url = Storage::disk('public')->url($relativePath);
             $movie->backdrop = $url;
         } catch (\Exception $e) {
@@ -111,34 +111,10 @@ class Moviesearch extends Component
         $movie->save();
     }
 
-    public function addMovie($tmdb_id, )
+    public function addMovie($tmdb_id,)
     {
         self::addTmdbMovie($tmdb_id);
         return $this->redirect('/movies/');
     }
 
-    public static function makeRequest(string $url)
-    {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.themoviedb.org/3/'.$url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.env('TMDB_KEY', ''),
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        return json_decode($response);
-    }
 }

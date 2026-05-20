@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
+
 class TmdbController extends Controller
 {
     public static function getPosters(string $tmdbid)
@@ -13,27 +15,27 @@ class TmdbController extends Controller
 
     public static function makeRequest(string $url)
     {
-        $curl = curl_init();
+        $response = Http::withToken(config('services.tmdb.key'))
+            ->acceptJson()
+            ->timeout(20)
+            ->connectTimeout(10)
+            ->retry(3, 200)
+            ->withHeaders([
+                'Accept-Encoding' => 'identity',
+            ])
+            ->get('https://api.themoviedb.org/3/'.$url);
 
-        curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.themoviedb.org/3/'.$url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.env('TMDB_KEY', ''),
-            ],
-        ]);
+        if ($response->failed()) {
+            logger()->error('TMDB API error', [
+                'url' => $url,
+                'status' => $response->status(),
+                'response' => $response->body(),
+            ]);
 
-        $response = curl_exec($curl);
+            return null;
+        }
 
-        curl_close($curl);
-
-        return json_decode($response);
+        return $response->object();
     }
 
     public static function getImageFile(string $url)

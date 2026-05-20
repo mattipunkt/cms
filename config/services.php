@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'tmdb' => [
+        'key' => env('TMDB_KEY', ''),
+        'language'=> env('TMDB_LANG', 'en-US'),
+    ]
+
 ];
