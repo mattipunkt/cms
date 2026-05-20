@@ -3,7 +3,7 @@
 return [
     'mail' => 'E-Mail-Address',
     'password' => 'Password',
-    'login' => 'Login.',
+    'login' => 'Login',
     'register' => 'Register',
     'first_name' => 'First Name',
     'username' => 'Username',
@@ -55,5 +55,11 @@ return [
     'loggedinas' => 'You are logged in as',
     'logout' => 'Logout',
     'currentlyinvisible' => 'Currently invisible',
-    'subtitle' => 'Extra title/Subtitle'
+    'subtitle' => 'Extra title/Subtitle',
+    'booklets' => 'Booklets',
+    'upload_booklets' => 'Upload booklet',
+    'booklet_name' => 'Name of booklet (e.g. "June 2026")',
+    'existing_booklets' => 'Existing booklets',
+    'filter_movies' => 'Search/Filter',
+    'filter'=>'Filter',
 ];

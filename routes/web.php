@@ -1,15 +1,18 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookletController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProgramPlannerController;
+use App\Http\Resources\BookletResource;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\MovieResource;
 use App\Http\Resources\ShowtimeResource;
 use App\Livewire\Moviesearch;
+use App\Models\Booklet;
 use App\Models\Movie;
 use App\Models\Showtime;
 use Carbon\Carbon;
@@ -62,6 +65,11 @@ Route::get('/planner/showtime/{id}/remove', [ProgramPlannerController::class, 'r
 Route::get('/events', [EventController::class, 'showEvents'])->name('showEvents')->middleware('auth');
 Route::post('/events/add', [EventController::class, 'addEvent'])->name('addEvent')->middleware('auth');;
 Route::get('/events/{id}/delete', [EventController::class, 'deleteEvent'])->name('deleteEvent')->middleware('auth');;
+
+
+Route::get('/booklets', [BookletController::class, 'showBookletView'])->name('showBookletView')->middleware('auth');
+Route::post('/booklets/add', [BookletController::class, 'uploadBooklet'])->name('upload-booklet')->middleware('auth');
+Route::get('/booklets/delete/{id}', [BookletController::class, 'deleteBooklet'])->name('delete-booklet')->middleware('auth');
 
 
 # API
@@ -134,4 +142,8 @@ Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
             ->orderBy('time')
             ->get()
     );
+});
+
+Route::get('/api/booklets', function () {
+   return BookletResource::collection(Booklet::all());
 });

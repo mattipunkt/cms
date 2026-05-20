@@ -1,7 +1,18 @@
 <x-layout>
-    <h1>
-        {{ __('lines.program_planner') }}
+    <h1 class="d-flex justify-content-between">
+        <div>        {{ __('lines.program_planner') }}
+        </div>
+
+        <div class="d-flex gap-2">
+            <input name="filter" class="form-control" type="text" placeholder="{{ __('lines.filter_movies') }}" />
+            <button onclick="filter()" id="filter" class="btn btn-info ms-2" type="submit">{{ __('lines.filter') }}</button>
+        </div>
     </h1>
+    <form class="">
+        @csrf
+
+    </form>
+    <hr>
     <div>
         @foreach($movies as $movie)
             <div class="card mb-2">
@@ -45,7 +56,7 @@
                             <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
                                 @csrf
                                 <input class="form-control" name="time" type="datetime-local" required>
-                                <input class="form-control" name="subtitle" type="text" placeholder="{{ __('lines.subtitle') }} (e.g. Premiere)">
+                                <input class="form-control mt-2" name="subtitle" type="text" placeholder="{{ __('lines.subtitle') }} (e.g. Premiere)">
                                 <input class="form-control mt-2" name="language" type="text" placeholder="{{ __('lines.language') }} (e.g. OV)">
                                 <select class="form-select mt-2" name="location_id" aria-label="{{ __('lines.location') }}" required>
                                     @foreach($locations as $location)
@@ -71,4 +82,9 @@
             </div>
         @endforeach
     </div>
+    <script>
+        function filter() {
+            window.location.href = "/planner?filter=" + document.querySelector("input[name=filter]").value;
+        }
+    </script>
 </x-layout>

@@ -3,7 +3,7 @@
 return [
     'mail' => 'E-Mail-Adresse',
     'password' => 'Passwort',
-    'login' => 'Einloggen.',
+    'login' => 'Einloggen',
     'register' => 'Registrieren',
     'first_name' => 'Vorname',
     'username' => 'Nutzername',
@@ -55,5 +55,11 @@ return [
     'loggedinas' => 'Du bist angemeldet als',
     'logout' => 'Abmelden',
     'currentlyinvisible' => 'Aktuell nicht sichtbar',
-    'subtitle' => 'Zusatztitel'
+    'subtitle' => 'Zusatztitel',
+    'booklets' => 'Programmhefte',
+    'upload_booklets' => 'Programmhefte hochladen',
+    'booklet_name' => 'Name des Heftes (z.B. "Juni 2026")',
+    'existing_booklets' => 'Vorhandene Hefte',
+    'filter_movies' => 'Suche/Filtern',
+    'filter'=>'Filtern',
 ];

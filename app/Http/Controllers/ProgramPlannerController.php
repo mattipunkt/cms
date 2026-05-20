@@ -6,14 +6,21 @@ use App\Models\Event;
 use App\Models\Location;
 use App\Models\Movie;
 use App\Models\Showtime;
+use Illuminate\Http\Request;
 
 class ProgramPlannerController extends Controller
 {
     //
-    public function showPlanner()
+    public function showPlanner(Request $request)
     {
+        $filter = $request->query('filter');
+        if ($filter) {
+            $movies = Movie::where('title', 'like', '%'.$filter.'%')->get();
+        } else {
+            $movies = Movie::all();
+        }
         return view('planner.main', [
-            'movies' => Movie::all(),
+            'movies' => $movies,
             'locations' => Location::all(),
             'events' => Event::all()
         ]);

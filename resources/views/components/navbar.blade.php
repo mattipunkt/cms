@@ -16,6 +16,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                @auth
                 <li class="nav-item">
                     <a class="nav-link" href="/planner"><i class="bi bi-calendar4-range"></i> {{ __('lines.program_planner') }}</a>
                 </li>
@@ -28,28 +29,25 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/events"><i class="bi bi-balloon"></i> {{ __('lines.events') }}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/booklets"><i class="bi bi-book"></i> {{ __('lines.booklets') }}</a>
+                </li>
+                    @endauth
             </ul>
             <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> Account
+                <li class="nav-item">
+                    @guest
+                    <a class="nav-link" href="/auth/login">
+                        <i class="bi bi-door-open"> </i>  {{ __('lines.login') }}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        @guest
-                        <a class="dropdown-item" href="/auth/login">
-                            {{ __('lines.login') }}
-                        </a>
-                        @endguest
-                        @auth
-                        <a class="dropdown-item disabled" disabled>
-                            <b>{{ __('lines.loggedinas') }} <i>{{ Auth::user()->name }}</i></b>
-                        </a>
-                        <a class="dropdown-item" href="/auth/logout">
-                            {{ __('lines.logout') }}
-                        </a>
-                        @endauth
-                    </div>
+                    @endguest
+                    @auth
+                    <a class="nav-link" href="/auth/logout">
+                        <i class="bi bi-door-closed"> </i> {{ __('lines.logout') }}
+                    </a>
+                    @endauth
                 </li>
+
                 <li class="nav-item mt-sm-2">
                     <span class="badge rounded-pill text-bg-info">
                         <a href="https://github.com/mattipunkt/cms" target="_blank" class="text-decoration-none text-black  ">
