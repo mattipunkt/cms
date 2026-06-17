@@ -30,20 +30,41 @@ Artisan::command('factory:showtimes', function () {
 
 Artisan::command('importArray {path}', function(string $path) {
     $array = json_decode(file_get_contents($path), true);
+    $kategorien = $array[3]['data'];
     foreach ($array[7]['data'] as $showtime) {
         $date = strtotime($showtime['datum'].' '.$showtime['stunde'].':'.$showtime['minute']);
         $movieId = $showtime['filmId'];
         if ($date > time()) {
             $movie = MovieController::getMovieInfoFromId($array[2]['data'], $movieId);
             preg_match('/(?<=\s)\d{4}(?=\s)/', $movie['kurzinfo'], $matches);
+            $event = null;
+            if ($showtime['kategorieId'] == '1') {
+                $movie['event'] = null;
+            } else {
+                foreach ($kategorien as $kategorie) {
+                    if ($kategorie['kategorieId'] == $showtime['kategorieId']) {
+                        $event = \App\Models\Event::firstOrCreate([
+                            'name' => $kategorie['name'],
+                        ]);
+                        break;
+                    }
+                }
+            }
+            $location = Location::firstOrCreate([
+                'name' => 'Kinobar'
+            ])->id;
+            if ($showtime['kategorieId'] == '381') {
+                $location = Location::firstOrCreate([
+                    'name' => 'Sommerkino auf der Feinkost'
+                ])->id;
+            }
             Showtime::create([
                 'movie_id' => Movie::firstOrCreate([
                     'title' => $movie['titel'],
                     'year' => $matches[0] ?? '2026',
                 ])->id,
-                'location_id' => Location::firstOrCreate([
-                    'name' => 'Kinobar'
-                ])->id,
+                'location_id' => $location,
+                'event_id' => $event->id ?? null,
                 'time' => $date,
             ]);
         }
