@@ -4,8 +4,10 @@ use App\Models\Location;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Http\Controllers\MovieController;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -46,4 +48,19 @@ Artisan::command('importArray {path}', function(string $path) {
             ]);
         }
     }
+});
+
+
+Artisan::command('admin:reset-pw {pw}', function (string $pw) {
+    $user = User::find(1);
+
+    if (!$user) {
+        $this->error('User mit ID 1 wurde nicht gefunden!');
+        return;
+    }
+
+    $user->password = Hash::make($pw);
+    $user->save();
+
+    $this->info('Passwort für Admin erfolgreich zurückgesetzt!');
 });
