@@ -80,7 +80,8 @@ class Moviesearch extends Component
             $movie = Movie::find($id);
             $tmdb_id_merge = Movie::where('tmdb_id', $tmdb_id)->first();
             if ($tmdb_id_merge != null) {
-                foreach(Showtime::where('movie_id', $tmdb_id_merge->id) as $showtime) {
+                $showtimes = Showtime::where('movie_id', $tmdb_id_merge->id)->get();
+                foreach($showtimes as $showtime) {
                     $showtime->movie_id = $movie->id;
                     $showtime->save();
                 }
