@@ -9,6 +9,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProgramPlannerController;
 use App\Http\Resources\BookletResource;
 use App\Http\Resources\EventResource;
+use App\Http\Resources\LocationResource;
 use App\Http\Resources\MovieResource;
 use App\Http\Resources\ShowtimeResource;
 use App\Livewire\Moviesearch;
@@ -77,6 +78,18 @@ Route::get('/api/movies', function () {
     return MovieResource::collection(Movie::where('activation', 1)->get());
 });
 Route::get('/api/upcomingShowtimes', function () {
+    $location = request()->query('locationId', null);
+    if ($location != null) {
+        return ShowtimeResource::collection(
+            Showtime::with(['location', 'movie', 'event'])
+            ->whereHas('movie', function ($query) {
+                $query->where('activation', true);
+            })
+            ->where('location_id', $location)
+            ->upcoming()
+            ->get()
+        );
+    }
     return ShowtimeResource::collection(
         Showtime::with(['location', 'movie', 'event'])
             ->whereHas('movie', function ($query) {
@@ -116,9 +129,12 @@ Route::get('/api/today', function () {
 Route::get('/api/events', function () {
     return EventResource::collection(\App\Models\Event::all());
 });
+
+Route::get('/api/locations', function () {
+    return LocationResource::collection(\App\Models\Location::all());
+});
 Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
     $event = $request->query('eventId');
-
     $startOfDay = Carbon::parse($date)->startOfDay();
     $endOfDay = Carbon::parse($date)->endOfDay();
     if($event != "") {
@@ -147,3 +163,4 @@ Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
 Route::get('/api/booklets', function () {
    return BookletResource::collection(Booklet::all());
 });
+
