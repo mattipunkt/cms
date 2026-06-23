@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Http\Controllers\TmdbController;
 use App\Models\Movie;
+use App\Models\Showtime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
@@ -44,7 +45,7 @@ class Moviesearch extends Component
         }
     }
 
-    public static function addTmdbMovie($tmdb_id, $id = null)
+    public static function addTmdbMovie($tmdb_id, $id = null): void
     {
         $results = TmdbController::makeRequest('movie/' . $tmdb_id . '?language=' . config('services.tmdb.language'));
         if ($results == null) {
@@ -77,6 +78,15 @@ class Moviesearch extends Component
             $movie = new Movie;
         } else {
             $movie = Movie::find($id);
+            $tmdb_id_merge = Movie::where('tmdb_id', $tmdb_id)->first();
+            if ($tmdb_id_merge != null) {
+                foreach(Showtime::where('movie_id', $tmdb_id_merge->id) as $showtime) {
+                    $showtime->movie_id = $movie->id;
+                    $showtime->save();
+                }
+                $movie->delete();
+                return;
+            }
         }
         $movie->title = $results->title ?? null;
         $movie->year = strtotime($results->release_date) ?? null;
