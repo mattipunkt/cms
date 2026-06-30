@@ -75,7 +75,13 @@ Route::get('/booklets/delete/{id}', [BookletController::class, 'deleteBooklet'])
 
 # API
 Route::get('/api/movies', function () {
-    return MovieResource::collection(Movie::where('activation', 1)->get());
+    return MovieResource::collection(
+        Movie::where('activation', 1)
+            ->whereHas('showtimes', function ($query) {
+                $query->where('time', '>', Carbon::now());
+            })
+            ->get()
+    );
 });
 Route::get('/api/upcomingShowtimes', function () {
     $location = request()->query('locationId', null);
