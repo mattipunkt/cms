@@ -111,8 +111,9 @@ class MovieController extends Controller
             ]);
         } catch (ValidationException) {
             session()->flash('error', 'You shall not add a movie without a title!');
+            return redirect('/movies/add/man');
         }
-        Movie::create([
+        $movie = Movie::create([
             'title' => $request->title,
             'year' => strtotime('01-01-'.$request->year),
             'director' => $request->director,
@@ -125,7 +126,7 @@ class MovieController extends Controller
             'subtitle' => $request->subtitle,
         ]);
 
-        return redirect('/movies/');
+        return redirect('/movies/'. $movie->id.'/edit');
     }
 
     public function changePosterMan(string $id, Request $request)

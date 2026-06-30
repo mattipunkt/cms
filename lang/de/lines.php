@@ -62,4 +62,5 @@ return [
     'existing_booklets' => 'Vorhandene Hefte',
     'filter_movies' => 'Suche/Filtern',
     'filter'=>'Filtern',
+    'tmdb_id' => 'TheMovieDB-ID (optional)',
 ];

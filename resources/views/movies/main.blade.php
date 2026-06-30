@@ -7,7 +7,7 @@
         @forelse($movies as $movie)
             <div class="card mb-3 @if(!$movie->activation) opacity-50 @endif">
                 <div class="row g-0">
-                    @if($movie->image)
+                    @if($movie->image && $movie->activation)
                     <div class="col-auto">
                         <img src="{{ $movie->image }}" class="img-fluid rounded-start" style="max-width: 200px;" alt="">
                     </div>
