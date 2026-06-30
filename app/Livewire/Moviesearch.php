@@ -52,6 +52,7 @@ class Moviesearch extends Component
             session()->flash('error', 'No results found or API Limit may be exceeded');
         }
         $credits = TmdbController::makeRequest('movie/' . $tmdb_id . '/credits?language=' . config('services.tmdb.language'));
+        $trailers = TmdbController::makeRequest('movie/' . $tmdb_id . '/videos?language=' . config('services.tmdb.language'));
         $director = '';
         foreach ($credits->crew as $credit) {
             if ($credit->job == 'Director') {
@@ -87,6 +88,11 @@ class Moviesearch extends Component
                 }
                 $movie->delete();
                 return;
+            }
+        }
+        foreach ($trailers->results as $trailer) {
+            if ($trailer->type == 'Trailer' && $trailer->site == 'YouTube' && $trailer->official === true) {
+                $movie->trailer_url = 'https://www.youtube.com/watch?v=' . $trailer->key;
             }
         }
         $movie->title = $results->title ?? null;
