@@ -10,23 +10,28 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\Laravel\Facades\Image;
+
 use function Laravel\Prompts\error;
 
 class MovieController extends Controller
 {
     public function showMovieList(Request $request)
     {
-
+        $filter = $request->query('filter');
+        $movies = Movie::orderBy('title', direction: 'asc')->get();
+        if ($filter) {
+            $movies = Movie::where('title', 'like', '%' . $filter . '%')->get();
+        }
         return view('movies.main', [
-            'movies' => Movie::all(),
+            'movies' => $movies,
         ]);
     }
 
 
-    public function editMovie(string $id)
+    public function editMovie(string $movieId)
     {
         return view('movies.edit', [
-            'movie' => Movie::where('id', $id)->first(),
+            'movie' => Movie::where('id', $movieId)->first(),
         ]);
     }
 
@@ -39,12 +44,12 @@ class MovieController extends Controller
         } catch (ValidationException) {
             error('You shall add a title!');
         }
-        if ($request->tmdb_id != Movie::find($id)->tmdb_id ) {
+        if ($request->tmdb_id != Movie::find($id)->tmdb_id) {
             Moviesearch::addTmdbMovie($request->tmdb_id, $id);
         } else {
             Movie::where('id', $id)->update([
                 'title' => $request->title,
-                'year' => strtotime('01-01-'.$request->year),
+                'year' => strtotime('01-01-' . $request->year),
                 'director' => $request->director,
                 'actors' => $request->actors,
                 'genre' => $request->genre,
@@ -78,10 +83,9 @@ class MovieController extends Controller
                 'activation' => 1
             ]);
         } catch (QueryException $ex) {
-            session()->flash('error', 'Movie not found!'.$ex->getMessage());
+            session()->flash('error', 'Movie not found!' . $ex->getMessage());
         }
         return redirect('/movies/');
-
     }
 
     public function deactivateMovie(string $id)
@@ -90,12 +94,10 @@ class MovieController extends Controller
             Movie::where('id', $id)->update([
                 'activation' => 0
             ]);
-        } catch
-        (QueryException $ex) {
-            session()->flash('error', 'Movie not found!'.$ex->getMessage());
+        } catch (QueryException $ex) {
+            session()->flash('error', 'Movie not found!' . $ex->getMessage());
         }
         return redirect('/movies/');
-
     }
 
     public function addMovieMan(Request $request)
@@ -115,7 +117,7 @@ class MovieController extends Controller
         }
         $movie = Movie::create([
             'title' => $request->title,
-            'year' => strtotime('01-01-'.$request->year),
+            'year' => strtotime('01-01-' . $request->year),
             'director' => $request->director,
             'actors' => $request->actors,
             'genre' => $request->genre,
@@ -126,7 +128,7 @@ class MovieController extends Controller
             'subtitle' => $request->subtitle,
         ]);
 
-        return redirect('/movies/'. $movie->id.'/edit');
+        return redirect('/movies/' . $movie->id . '/edit');
     }
 
     public function changePosterMan(string $id, Request $request)
@@ -141,11 +143,11 @@ class MovieController extends Controller
             return redirect('/movies/');
         }
         $image = Image::read($request->image);
-        if($image->width() < 500) {
+        if ($image->width() < 500) {
             session()->flash('error', 'Warning: Image is too small and may not look good on large screen devices!');
         }
         $encoded = $image->encodeByExtension('webp', 80);
-        $relativePath = 'posters/'.$id.'.webp';
+        $relativePath = 'posters/' . $id . '.webp';
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $id)->update(['image' => $url]);
@@ -164,11 +166,11 @@ class MovieController extends Controller
             return redirect('/movies/');
         }
         $image = Image::read($request->image);
-        if($image->width() < 500) {
+        if ($image->width() < 500) {
             session()->flash('error', 'Warning: Image is too small and may not look good on large screen devices!');
         }
         $encoded = $image->encodeByExtension('webp', 80);
-        $relativePath = 'backdrops/'.$id.'.webp';
+        $relativePath = 'backdrops/' . $id . '.webp';
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $id)->update(['backdrop' => $url]);
@@ -176,7 +178,8 @@ class MovieController extends Controller
     }
 
 
-    public static function getMovieInfoFromId($array, $id) {
+    public static function getMovieInfoFromId($array, $id)
+    {
         foreach ($array as $movie) {
             if ($movie['filmId'] == $id) {
                 return $movie;

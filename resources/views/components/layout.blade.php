@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,30 +10,39 @@
     </style>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/htmx.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        .col-7th {
+            flex: 0 0 auto;
+            width: 14.285714%;
+        }
+    </style>
 </head>
-<body>
-        <x-navbar>
-    </x-navbar>
-<div class="container">
 
-    <br>
-    @if(session('status'))
-        <div class="alert alert-info">
-            {{ session('status') }}
-        </div>
+<body>
+    <x-navbar>
+    </x-navbar>
+    <div class="container">
+
         <br>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    {{ $slot }}
-</div>
+        @if(session('status'))
+            <div class="alert alert-info">
+                {{ session('status') }}
+            </div>
+            <br>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        {{ $slot }}
+    </div>
 </body>
 <script>
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 </script>
+
 </html>

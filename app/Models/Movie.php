@@ -44,5 +44,4 @@ class Movie extends Model
     {
         return $this->showtimes()->past();
     }
-
 }

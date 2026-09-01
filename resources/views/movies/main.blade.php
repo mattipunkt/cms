@@ -3,15 +3,16 @@
         <h2>{{ __('lines.movie_list') }}</h2>
         <span><a href="/movies/add" role="button" class="btn btn-info">{{ __('lines.add_movie') }}</a></span>
     </div>
+
+    <hr>
+    <div class="d-flex gap-2 bg-info p-1 rounded">
+        <input name="filter" class="form-control" type="text" placeholder="{{ __('lines.filter_movies') }}" />
+        <button onclick="filter()" id="filter" class="btn btn-info" type="submit">{{ __('lines.filter') }}</button>
+    </div>
 <br>
         @forelse($movies as $movie)
             <div class="card mb-3 @if(!$movie->activation) opacity-50 @endif">
                 <div class="row g-0">
-                    @if($movie->image && $movie->activation)
-                    <div class="col-auto">
-                        <img src="{{ $movie->image }}" class="img-fluid rounded-start" style="max-width: 200px;" alt="">
-                    </div>
-                    @endif
                     <div class="col">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -21,7 +22,7 @@
                                 </div>
 
 
-                                <div class="flex gap-5">
+                                <div class="d-flex gap-3">
                                     @if($movie->activation)
                                         <span><a style="color:black" href="/movies/{{ $movie->id }}/deactivate" class="bi bi-eye"></a></span>
                                     @else
@@ -33,10 +34,7 @@
 
                                 </div>
                             </div>
-                            @if($movie->activation)
-                            <p class="card-text">{{ $movie->description }}</p>
-                            <p class="card-text"><small class="text-body-secondary">{{ $movie->director }} | {{ date('Y', $movie->year) }}</small></p>
-                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -44,4 +42,9 @@
         @empty
             <i>{{ __('lines.no_movies') }}</i>
         @endforelse
+<script>
+    function filter() {
+        window.location.href = "/movies?filter=" + document.querySelector("input[name=filter]").value;
+    }
+</script>
 </x-layout>

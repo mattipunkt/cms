@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('showtime', function (Blueprint $table) {
+        Schema::table('showtimes', function (Blueprint $table) {
             $table->string('ticket_url')->default('')->nullable();
         });
     }

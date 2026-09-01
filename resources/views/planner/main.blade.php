@@ -1,90 +1,89 @@
 <x-layout>
     <h1 class="d-flex justify-content-between">
-        <div>        {{ __('lines.program_planner') }}
-        </div>
-
-        <div class="d-flex gap-2">
-            <input name="filter" class="form-control" type="text" placeholder="{{ __('lines.filter_movies') }}" />
-            <button onclick="filter()" id="filter" class="btn btn-info ms-2" type="submit">{{ __('lines.filter') }}</button>
+        <div>{{ __('lines.program_planner') }}</div>
+        <div>
+            <a href="/planner?startDate={{ $lastWeekDay }}"
+                class="link-secondary link-underline link-underline-opacity-0">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <a href="/planner?startDate={{ $nextWeekDay }}"
+                class="link-secondary link-underline link-underline-opacity-0">
+                <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </h1>
-    <form class="">
-        @csrf
 
-    </form>
     <hr>
-    <div>
-        @foreach($movies as $movie)
-            <div class="card mb-2">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        {{ $movie->title }} @if(!$movie->activation) <b>({{ __('lines.currentlyinvisible') }})</b>@endif
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#{{ $movie->id }}modal">{{ __('lines.add_showtime') }}</button>
-                    </div>
+
+    <div class="row">
+        @foreach ($result as $res)
+            <div class="col col-7th border-right">
+                <h5 class="text-center">{{ $res['date'] }}</h5>
+                <div class="card">
+                    <button class="btn btn-info  text-center" data-bs-toggle="modal" data-bs-target="#showtimeModal"
+                        data-showtime-url="{{ url('/planner/showtime/add?date='.$res['date']) }}">
+                        <i class="bi bi-plus fs-4"></i>
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach($movie->upcomingShowtimes as $showtime)
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <b>{{ $showtime->time->format("d.m.Y, H:i")}}</b> <br>
-                                    <small>{{ $showtime->location->name }}</small>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="/planner/showtime/{{ $showtime->id }}/remove">
-                                            {{ __('lines.delete') }}
-                                        </a>
-                                    </li>
-                                </ul>
+                @foreach ($res['showtimes'] as $st)
+                    <button type="button" class="btn p-0 w-100 text-start border-0 bg-transparent" data-bs-toggle="modal"
+                        data-bs-target="#showtimeModal" data-showtime-url="{{ url('/planner/showtime/view/'.$st->id) }}"
+                        data-showtime-title="{{ optional($st->movie)->title }}">
+                        <div class="card my-2 shadow-sm">
+                            <div class="card-body p-2">
+                                <b>{{ $st->time->format('H:i') }}</b><br>
+                                <span>{{ optional($st->movie)->title }}</span>
+                                <span class=" badge text-bg-warning">{{ optional($st->location)->name }}</span>
+
+                                @if ($st->event)
+                                    <span class="badge text-bg-danger">{{ optional($st->event)->name }}</span>
+                                @endif
                             </div>
-                        @endforeach
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal fade" id="{{ $movie->id }}modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                                <h1 class="modal-title fs-5">{{ __('lines.add_showtime_for') }} <b>{{ $movie->title }}</b></h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('lines.close') }}"></button>
                         </div>
-                        <div class="modal-body">
-                            <form method="POST" action="/planner/{{ $movie->id }}/showtime/add">
-                                @csrf
-                                <input class="form-control" name="time" type="datetime-local" required>
-                                <input class="form-control mt-2" name="subtitle" type="text" placeholder="{{ __('lines.subtitle') }} (e.g. Premiere)">
-                                <input class="form-control mt-2" name="language" type="text" placeholder="{{ __('lines.language') }} (e.g. OV)">
-                                <select class="form-select mt-2" name="location_id" aria-label="{{ __('lines.location') }}" required>
-                                    @foreach($locations as $location)
-                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                    @endforeach
-                                </select>
-                                <select class="form-select mt-2" name="event_id" aria-label="{{ __('lines.event') }} (optional)">
-                                    <option value="">{{ __('lines.no_event') }}</option>
-                                    @foreach($events as $event)
-                                        <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-info mt-3">
-                                        {{ __('lines.save') }}
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </button>
+                @endforeach
 
-                </div>
+
             </div>
         @endforeach
     </div>
+
+    <div class="modal fade" id="showtimeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showtimeModalLabel">Spielzeit bearbeiten</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body" id="showtimeModalBody">
+                    <div class="text-center text-muted py-5">
+                        Lade...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function filter() {
-            window.location.href = "/planner?filter=" + document.querySelector("input[name=filter]").value;
-        }
+        document.getElementById('showtimeModal').addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            if (!trigger) {
+                return;
+            }
+
+            const url = trigger.getAttribute('data-showtime-url');
+            const title = trigger.getAttribute('data-showtime-title') || 'Showtime';
+
+            // document.getElementById('showtimeModalLabel').textContent = title;
+
+            const body = document.getElementById('showtimeModalBody');
+            body.innerHTML = '<div class="text-center text-muted py-5">Lade...</div>';
+
+            htmx.ajax('GET', url, body);
+        });
+
+        document.getElementById('showtimeModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('showtimeModalBody').innerHTML = '<div class="text-center text-muted py-5">Lade...</div>';
+        });
     </script>
 </x-layout>

@@ -63,4 +63,5 @@ return [
     'filter_movies' => 'Suche/Filtern',
     'filter'=>'Filtern',
     'tmdb_id' => 'TheMovieDB-ID (optional)',
+    'movie' => 'Film'
 ];

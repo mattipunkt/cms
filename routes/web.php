@@ -60,8 +60,10 @@ Route::post('/locations/add', [LocationController::class, 'addLocationPost'])->n
 Route::get('/locations/{id}/delete', [LocationController::class, 'deleteLocation'])->name('deleteLocation')->middleware('auth');
 
 Route::get('/planner', [ProgramPlannerController::class, 'showPlanner'])->name('showPlanner')->middleware('auth');
-Route::post('/planner/{id}/showtime/add', [ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');
+Route::post('/planner/showtime/add', [ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');
 Route::get('/planner/showtime/{id}/remove', [ProgramPlannerController::class, 'removeShowtime'])->name('removeShowtime')->middleware('auth');
+Route::get('/planner/showtime/view/{id}', [ProgramPlannerController::class, 'editShowtime'])->name('editShowtime')->middleware('auth');
+Route::get('/planner/showtime/add', [ProgramPlannerController::class, 'showShowtimeAdder'])->name('showAddShowtime')->middleware('auth');
 
 Route::get('/events', [EventController::class, 'showEvents'])->name('showEvents')->middleware('auth');
 Route::post('/events/add', [EventController::class, 'addEvent'])->name('addEvent')->middleware('auth');;
