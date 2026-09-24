@@ -95,6 +95,7 @@ Route::get('/api/upcomingShowtimes', function () {
                 $query->where('activation', true);
             })
             ->where('location_id', $location)
+            ->orderBy('time')
             ->upcoming()
             ->get()
         );
