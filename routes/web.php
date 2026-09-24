@@ -47,7 +47,7 @@ Route::get('/movies/add/man', [MovieController::class, 'addMovieMan'])->name('ad
 Route::post('/movies/add/man', [MovieController::class, 'saveMovieMan'])->name('saveMovieMan')->middleware('auth');
 Route::get('/movies/{id}/activate', [MovieController::class, 'activateMovie'])->name('activateMovie')->middleware('auth');
 Route::get('/movies/{id}/deactivate', [MovieController::class, 'deactivateMovie'])->name('deactivateMovie')->middleware('auth');
-
+Route::get('/movies/{id}/plan', [MovieController::class, 'planMovie'])->name('planMovie')->middleware('auth');
 
 
 Route::post('movies/{id}/edit/poster/man', [MovieController::class, 'changePosterMan'])->name('changePosterMan')->middleware('auth');
@@ -63,6 +63,7 @@ Route::get('/planner', [ProgramPlannerController::class, 'showPlanner'])->name('
 Route::post('/planner/showtime/add', [ProgramPlannerController::class, 'addShowtime'])->name('addShowtime')->middleware('auth');
 Route::get('/planner/showtime/{id}/remove', [ProgramPlannerController::class, 'removeShowtime'])->name('removeShowtime')->middleware('auth');
 Route::get('/planner/showtime/view/{id}', [ProgramPlannerController::class, 'editShowtime'])->name('editShowtime')->middleware('auth');
+Route::post('/planner/showtime/{id}/edit', [ProgramPlannerController::class, 'editShowtimePost'])->name('submitShowtimeEdit')->middleware('auth');
 Route::get('/planner/showtime/add', [ProgramPlannerController::class, 'showShowtimeAdder'])->name('showAddShowtime')->middleware('auth');
 
 Route::get('/events', [EventController::class, 'showEvents'])->name('showEvents')->middleware('auth');

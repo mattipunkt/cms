@@ -83,6 +83,28 @@ class ProgramPlannerController extends Controller
         return redirect('/planner');
     }
 
+
+    public function editShowtimePost(string $id) 
+    {
+            $validated = request()->validate([
+            // HTML datetime-local sends value like 2025-10-10T10:00
+            'time' => 'required|date_format:Y-m-d\TH:i',
+            'location_id' => 'required|exists:locations,id',
+            'event_id' => 'exists:events,id|nullable',
+            'language' => 'max:255',
+            'subtitle' => 'max:255',
+        ]);
+        $showtime = Showtime::where('id', $id)->firstOrFail();
+        $showtime->time = $validated['time'];
+        $showtime->location_id = $validated['location_id'];
+        $showtime->event_id = $validated['event_id'];
+        $showtime->language = $validated['language'];
+        $showtime->subtitle = $validated['subtitle'];
+        $showtime->save();
+
+        return redirect('/planner');
+    }
+
     public function removeShowtime(string $id)
     {
         $showtime = Showtime::where('id', $id)->firstOrFail();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Livewire\Moviesearch;
 use App\Models\Movie;
+use App\Models\Showtime;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -186,5 +187,12 @@ class MovieController extends Controller
             }
         }
         return null;
+    }
+
+    public function planMovie(string $id) {
+        return view('movies.plan', [
+            'movie' => Movie::find($id),
+            'showtimes' => Showtime::where('movie_id', $id)->get()
+        ]);
     }
 }
