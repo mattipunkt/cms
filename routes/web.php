@@ -94,7 +94,7 @@ Route::get('/api/upcomingShowtimes', function () {
             ->whereHas('movie', function ($query) {
                 $query->where('activation', true);
             })
-            ->where('event_id', $location)
+            ->where('event_id', $event)
             ->orderBy('time')
             ->upcoming()
             ->get()
