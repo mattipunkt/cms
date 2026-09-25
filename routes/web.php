@@ -87,14 +87,14 @@ Route::get('/api/movies', function () {
     );
 });
 Route::get('/api/upcomingShowtimes', function () {
-    $location = request()->query('locationId', null);
-    if ($location != null) {
+    $event = request()->query('eventId', null);
+    if ($event != null) {
         return ShowtimeResource::collection(
             Showtime::with(['location', 'movie', 'event'])
             ->whereHas('movie', function ($query) {
                 $query->where('activation', true);
             })
-            ->where('location_id', $location)
+            ->where('event_id', $event)
             ->orderBy('time')
             ->upcoming()
             ->get()
