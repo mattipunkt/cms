@@ -144,6 +144,19 @@ Route::get('/api/locations', function () {
     return LocationResource::collection(\App\Models\Location::all());
 });
 Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
+    if ($date === "preview") {
+        $from = Carbon::now()->addDays(14);
+
+        return ShowtimeResource::collection(
+            Showtime::with(['location', 'movie', 'event'])
+                ->whereHas('movie', function ($query) {
+                    $query->where('activation', true);
+                })
+                ->where('time', '>=', $from)
+                ->orderBy('time')
+                ->get()
+        );
+    }
     $event = $request->query('eventId');
     $startOfDay = Carbon::parse($date)->startOfDay();
     $endOfDay = Carbon::parse($date)->endOfDay();
