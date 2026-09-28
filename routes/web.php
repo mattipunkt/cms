@@ -137,7 +137,11 @@ Route::get('/api/today', function () {
     })->today()->get());
 });
 Route::get('/api/events', function () {
-    return EventResource::collection(\App\Models\Event::all());
+    return EventResource::collection(
+        \App\Models\Event::whereHas('showtimes', function ($query) {
+            $query->upcoming();
+        })->get()
+    );
 });
 
 Route::get('/api/locations', function () {
