@@ -36,7 +36,11 @@ Artisan::command('importArray {path}', function(string $path) {
         $movieId = $showtime['filmId'];
         if ($date > time()) {
             $movie = MovieController::getMovieInfoFromId($array[2]['data'], $movieId);
-            preg_match('/(?<=\s)\d{4}(?=\s)/', $movie['kurzinfo'], $matches);
+            if ($movie === null) {
+                $this->warn("Movie {$movieId} was not found in the import data; skipping showtime.");
+                continue;
+            }
+            preg_match('/(?<=\s)\d{4}(?=\s)/', (string) ($movie['kurzinfo'] ?? ''), $matches);
             $event = null;
             if ($showtime['kategorieId'] == '1') {
                 $movie['event'] = null;
