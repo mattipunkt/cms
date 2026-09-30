@@ -103,8 +103,8 @@ class Moviesearch extends Component
             return $genre->name;
         }, $results->genres)) ?? null;
         $movie->country = implode(', ', $results->origin_country) ?? null;
-        $movie->description = $results->overview ?? null;
-        $movie->image = 'https://image.tmdb.org/t/p/w1280/' . TmdbController::makeRequest('movie/' . $tmdb_id . '/images')->posters[0]->file_path;
+        // $movie->description = $results->overview ?? null;
+        $movie->image = 'https://image.tmdb.org/t/p/w1280/' . TmdbController::makeRequest('movie/' . $tmdb_id . '/images?include_image_language=de-DE,null')->posters[0]->file_path;
         $movie->runtime = $results->runtime;
         $movie->tmdb_id = $results->id;
         $movie->save();

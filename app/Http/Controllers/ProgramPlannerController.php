@@ -80,7 +80,9 @@ class ProgramPlannerController extends Controller
         $movie = Movie::where('id', $validated['movie_id'])->firstOrFail();
         $movie->showtimes()->create($validated);
 
-        return redirect('/planner');
+        return redirect()->route('showPlanner', [
+            'startDate' => Carbon::parse($validated['time'])->toDateString(),
+        ]);
     }
 
 

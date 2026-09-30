@@ -8,9 +8,9 @@ class TmdbController extends Controller
 {
     public static function getPosters(string $tmdbid)
     {
-        $resp = self::makeRequest('movie/'.$tmdbid.'/images?include_image_language=de,en');
+        $resp = self::makeRequest('movie/'.$tmdbid.'/images?include_image_language=de-DE,en');
 
-        return array_slice($resp->posters, 0, 15);
+        return $resp->posters;
     }
 
     public static function makeRequest(string $url)
