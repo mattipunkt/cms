@@ -36,15 +36,15 @@
                                 <b>{{ $st->time->format('H:i') }}</b><br>
                                 <span>{{ optional($st->movie)->title }}</span><br>
                                 <div class="d-flex gap-1 mt-2 flex-wrap">
-                                    <span class="badge text-bg-dark text-wrap">{{ optional($st)->subtitle }}</span>
+                                    <span class="badge text-bg-dark text-wrap text-break">{{ optional($st)->subtitle }}</span>
 
-                                    <span class="badge text-bg-success text-wrap">{{ optional($st)->language }}</span>
+                                    <span class="badge text-bg-success text-wrap text-break">{{ optional($st)->language }}</span>
 
 
-                                    <span class="badge text-bg-warning text-wrap">{{ optional($st->location)->name }}</span>
+                                    <span class="badge text-bg-warning text-wrap text-break">{{ optional($st->location)->name }}</span>
                                 
                                     @if ($st->event)
-                                        <span class="badge text-bg-danger text-wrap">{{ optional($st->event)->name }}</span>
+                                        <span class="badge text-bg-danger text-wrap text-break">{{ optional($st->event)->name }}</span>
                                     @endif
                                 </div>
                             </div>
