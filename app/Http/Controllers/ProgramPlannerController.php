@@ -104,7 +104,9 @@ class ProgramPlannerController extends Controller
         $showtime->subtitle = $validated['subtitle'];
         $showtime->save();
 
-        return redirect('/planner');
+        return redirect()->route('showPlanner', [
+            'startDate' => Carbon::parse($validated['time'])->toDateString(),
+        ]);
     }
 
     public function removeShowtime(string $id)

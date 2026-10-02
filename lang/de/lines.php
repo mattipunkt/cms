@@ -24,8 +24,11 @@ return [
     'venueaddress' => 'Adresse des Ortes',
     'new_location' => 'Neuer Ort',
     'editbackdrop' => 'Vollbild-Bild ändern',
+    'removebackdrop' => 'Vollbild-Bild löschen',
     'edit_movie' => 'Film bearbeiten',
     'edit_images' => 'Bilder bearbeiten',
+    'removeposter' => 'Poster löschen',
+
     'change_poster' => 'Poster bearbeiten',
     'change_fullsize_background' => 'Ändere das Vollbild-Bild (Hintergrund-Bild)',
     'edit_metadata' => 'Bearbeite die Metadaten',

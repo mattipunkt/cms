@@ -11,6 +11,9 @@
             </div>
 
         </form>
+        <div>
+            <a class="btn btn-danger" href="/movies/{{ $movie->id }}/edit/backdrop/remove"><i class="bi bi-trash"> </i>{{ __('lines.removebackdrop') }}</a>
+        </div>
     </div>
     <div class="row">
         @foreach ($images as $image)

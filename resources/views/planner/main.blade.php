@@ -18,7 +18,9 @@
     <div class="row">
         @foreach ($result as $res)
             <div class="col col-7th border-right">
-                <h5 class="text-center">{{ $res['date'] }}</h5>
+                <h5 class="text-center">
+                    <time datetime="{{ $res['date'] }}">{{ $res['date'] }}</time>
+                </h5>
                 <div class="card">
                     <button class="btn btn-info  text-center" data-bs-toggle="modal" data-bs-target="#showtimeModal"
                         data-showtime-url="{{ url('/planner/showtime/add?date='.$res['date']) }}">
@@ -32,12 +34,19 @@
                         <div class="card my-2 shadow-sm">
                             <div class="card-body p-2">
                                 <b>{{ $st->time->format('H:i') }}</b><br>
-                                <span>{{ optional($st->movie)->title }}</span>
-                                <span class=" badge text-bg-warning">{{ optional($st->location)->name }}</span>
+                                <span>{{ optional($st->movie)->title }}</span><br>
+                                <div class="d-flex gap-1 mt-2 flex-wrap">
+                                    <span class="badge text-bg-dark text-wrap">{{ optional($st)->subtitle }}</span>
 
-                                @if ($st->event)
-                                    <span class="badge text-bg-danger">{{ optional($st->event)->name }}</span>
-                                @endif
+                                    <span class="badge text-bg-success text-wrap">{{ optional($st)->language }}</span>
+
+
+                                    <span class="badge text-bg-warning text-wrap">{{ optional($st->location)->name }}</span>
+                                
+                                    @if ($st->event)
+                                        <span class="badge text-bg-danger text-wrap">{{ optional($st->event)->name }}</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </button>
@@ -65,6 +74,11 @@
     </div>
 
     <script>
+        document.querySelectorAll('time[datetime]').forEach(function (dateElement) {
+            const date = new Date(`${dateElement.dateTime}T00:00:00`);
+            dateElement.textContent = date.toLocaleDateString();
+        });
+
         document.getElementById('showtimeModal').addEventListener('show.bs.modal', function (event) {
             const trigger = event.relatedTarget;
             if (!trigger) {

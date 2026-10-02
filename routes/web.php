@@ -41,8 +41,11 @@ Route::post('/movies/{id}/edit', [MovieController::class, 'editMoviePost'])->nam
 Route::get('/movies/{id}/delete', [MovieController::class, 'deleteMovie'])->name('deleteMovie')->middleware('auth');
 Route::get('/movies/{id}/edit/poster', [ImageController::class, 'editPoster'])->name('editPoster')->middleware('auth');
 Route::post('/movies/{id}/edit/poster', [ImageController::class, 'setPoster'])->name('setPoster')->middleware('auth');
+Route::get('/movies/{id}/edit/poster/remove', [ImageController::class, 'removePoster'])->name('removePoster')->middleware('auth');
 Route::get('/movies/{id}/edit/backdrop', [ImageController::class, 'editBackdrop'])->name('editBackdrop')->middleware('auth');
 Route::post('/movies/{id}/edit/backdrop', [ImageController::class, 'setBackdrop'])->name('setBackdrop')->middleware('auth');
+Route::get('/movies/{id}/edit/backdrop/remove', [ImageController::class, 'removeBackdrop'])->name('removeBackdrop')->middleware('auth');
+
 Route::get('/movies/add/man', [MovieController::class, 'addMovieMan'])->name('addMovieMan')->middleware('auth');
 Route::post('/movies/add/man', [MovieController::class, 'saveMovieMan'])->name('saveMovieMan')->middleware('auth');
 Route::get('/movies/{id}/activate', [MovieController::class, 'activateMovie'])->name('activateMovie')->middleware('auth');

@@ -33,7 +33,7 @@ class ImageController extends Controller
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $id)->update(['image' => $url]);
-        return redirect('/movies/');
+        return redirect('/movies/'.$id.'/edit/poster');
     }
 
     public function editBackdrop(string $id)
@@ -59,6 +59,17 @@ class ImageController extends Controller
         Storage::disk('public')->put($relativePath, (string) $encoded);
         $url = Storage::disk('public')->url($relativePath);
         Movie::where('id', $id)->update(['backdrop' => $url]);
-        return redirect('/movies/');
+        return redirect('/movies/'.$id.'/edit/backdrop');
+    }
+
+    public function removeBackdrop(string $id) {
+        Movie::where('id', $id)->update(['backdrop' => null]);
+        return redirect('/movies/'.$id.'/edit/backdrop');
+    }
+
+    public function removePoster(string $id) {
+        Movie::where('id', $id)->update(['image' => null]);
+
+        return redirect('/movies/'.$id.'/edit/poster');
     }
 }
