@@ -21,6 +21,7 @@ class Showtime extends Model
         'movie_id',
         'language',
         'subtitle',
+        'ticket_url'
     ];
 
     protected $casts = [

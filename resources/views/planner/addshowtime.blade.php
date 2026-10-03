@@ -20,6 +20,8 @@
             <option value="{{ $event->id }}">{{ $event->name }}</option>
         @endforeach
     </select>
+    <input class="form-control mt-2" name="ticket_url" type="text" placeholder="{{ __('lines.ticket_url') }} ({{ __('lines.optional') }})">
+
     <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-info mt-3">
             {{ __('lines.save') }}

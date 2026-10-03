@@ -66,7 +66,8 @@ return [
     'movie' => 'Movie',
     'removebackdrop' => 'Remove Backdrop',
     'removeposter' => 'Remove Poster',
-
+    'ticket_url' => 'Link to ticket purchase',
+    'optional'=> 'optional',
 
 
 ];

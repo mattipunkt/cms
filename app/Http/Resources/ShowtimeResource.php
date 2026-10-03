@@ -21,7 +21,8 @@ class ShowtimeResource extends JsonResource
             'location' => new LocationResource($this->whenLoaded('location')),
             'language' => $this->language,
             'event' => new EventResource($this->whenLoaded('event')),
-            'subtitle' => $this->subtitle
+            'subtitle' => $this->subtitle,
+            'ticket_url' => $this->ticket_url
         ];
     }
 }

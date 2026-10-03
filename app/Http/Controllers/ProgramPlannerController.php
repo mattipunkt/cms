@@ -76,6 +76,7 @@ class ProgramPlannerController extends Controller
             'movie_id' => 'required|exists:movies,id',
             'language' => 'max:255',
             'subtitle' => 'max:255',
+            'ticket_url' => 'max:255|url:http,https'
         ]);
         $movie = Movie::where('id', $validated['movie_id'])->firstOrFail();
         $movie->showtimes()->create($validated);
@@ -95,6 +96,7 @@ class ProgramPlannerController extends Controller
             'event_id' => 'exists:events,id|nullable',
             'language' => 'max:255',
             'subtitle' => 'max:255',
+            'ticket_url' => 'url:http,https|max:255',
         ]);
         $showtime = Showtime::where('id', $id)->firstOrFail();
         $showtime->time = $validated['time'];
@@ -102,6 +104,7 @@ class ProgramPlannerController extends Controller
         $showtime->event_id = $validated['event_id'];
         $showtime->language = $validated['language'];
         $showtime->subtitle = $validated['subtitle'];
+        $showtime->ticket_url = $validated['ticket_url'];
         $showtime->save();
 
         return redirect()->route('showPlanner', [

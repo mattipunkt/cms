@@ -28,6 +28,8 @@ return [
     'edit_movie' => 'Film bearbeiten',
     'edit_images' => 'Bilder bearbeiten',
     'removeposter' => 'Poster löschen',
+    'ticket_url' => 'Link zum Ticketkauf',
+    'optional'=> 'optional',
 
     'change_poster' => 'Poster bearbeiten',
     'change_fullsize_background' => 'Ändere das Vollbild-Bild (Hintergrund-Bild)',
