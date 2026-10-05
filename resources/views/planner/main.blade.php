@@ -1,4 +1,13 @@
 <x-layout>
+    @if ($errors->any())
+    <div class="alert alert-danger mt-2">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <h1 class="d-flex justify-content-between">
         <div>{{ __('lines.program_planner') }}</div>
         <div>
