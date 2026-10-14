@@ -1,4 +1,4 @@
-<form method="POST" action="/planner/showtime/add">
+<form id="add-showtime-form" method="POST" action="/planner/showtime/add">
     @csrf
     <div class="mt-2">
         <label class="visually-hidden" for="movie-search">{{ __('lines.searchbytitle') }}</label>
@@ -38,6 +38,17 @@
 </form>
 
 <script>
+    const addShowtimeForm = document.getElementById('add-showtime-form');
+
+    addShowtimeForm.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' || event.target.matches('button')) {
+            return;
+        }
+
+        event.preventDefault();
+        addShowtimeForm.requestSubmit();
+    });
+
     document.querySelectorAll('.movie-search').forEach(function (searchInput) {
         const movieSelect = searchInput.nextElementSibling;
         const emptyMessage = movieSelect.nextElementSibling;

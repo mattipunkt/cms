@@ -1,6 +1,6 @@
 <div>
     <h4>{{ $showtime->movie->title }}</h4>
-    <form method="POST" action="/planner/showtime/{{ $showtime->id }}/edit">
+    <form id="edit-showtime-form" method="POST" action="/planner/showtime/{{ $showtime->id }}/edit">
     @csrf
     <input
         class="form-control mt-2"
@@ -41,6 +41,18 @@
         </button>
     </div>
 </form>
+    <script>
+        const editShowtimeForm = document.getElementById('edit-showtime-form');
+
+        editShowtimeForm.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter' || event.target.matches('button')) {
+                return;
+            }
+
+            event.preventDefault();
+            editShowtimeForm.requestSubmit();
+        });
+    </script>
 
     <div class="d-flex gap-2">
         <a href="/planner/showtime/{{ $showtime->id }}/remove" class="btn btn-danger"><i class="bi bi-trash">

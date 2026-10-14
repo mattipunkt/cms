@@ -5,7 +5,7 @@
     <h3 class="mt-3">
         {{ __('lines.edit_metadata') }}
     </h3>
-    <form method="post" action="/movies/add/man">
+    <form id="manual-movie-form" method="post" action="/movies/add/man">
         @csrf
         <div class="form-floating mb-3">
             <input name="title" type="text" class="form-control" id="title" placeholder="Like a Complete Unknown...">
@@ -52,5 +52,17 @@
         </button>
 
     </form>
+    <script>
+        const manualMovieForm = document.getElementById('manual-movie-form');
+
+        manualMovieForm.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter' || event.target.matches('textarea, button')) {
+                return;
+            }
+
+            event.preventDefault();
+            manualMovieForm.requestSubmit();
+        });
+    </script>
 <br><br>
 </x-layout>

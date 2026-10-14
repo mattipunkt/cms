@@ -16,7 +16,7 @@
     <h3 class="mt-3">
         {{ __('lines.edit_metadata') }}
     </h3>
-    <form method="post" action="/movies/{{ $movie->id }}/edit">
+    <form id="movie-edit-form" method="post" action="/movies/{{ $movie->id }}/edit">
         @csrf
         <div class="form-floating mb-3">
             <input name="title" type="text" class="form-control" id="title" placeholder="Like a Complete Unknown..." value="{{ $movie->title }}">
@@ -67,5 +67,17 @@
         </button>
 
     </form>
+    <script>
+        const movieEditForm = document.getElementById('movie-edit-form');
+
+        movieEditForm.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter' || event.target.matches('textarea, button')) {
+                return;
+            }
+
+            event.preventDefault();
+            movieEditForm.requestSubmit();
+        });
+    </script>
 <br><br>
 </x-layout>
