@@ -86,6 +86,7 @@ Route::get('/api/movies', function () {
             ->whereHas('showtimes', function ($query) {
                 $query->where('time', '>', Carbon::now());
             })
+            ->orderByDesc('created_at')
             ->get()
     );
 });
@@ -193,4 +194,3 @@ Route::get('/api/showtimes/byDate/{date}', function ($date, Request $request) {
 Route::get('/api/booklets', function () {
    return BookletResource::collection(Booklet::all());
 });
-
