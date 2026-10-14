@@ -159,7 +159,7 @@ class MovieController extends Controller
     {
         try {
             $request->validate([
-                'image' => 'required|image|max:4096', // 2MB Max
+                'image' => 'required|image|max:8096', // 2MB Max
             ]);
         } catch (ValidationException $e) {
             session()->flash('error', 'Error: You shall upload an image!');
